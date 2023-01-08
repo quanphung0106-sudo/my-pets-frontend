@@ -1,0 +1,88 @@
+$background_color: #f0919623;
+$background_color_hover: #f0919675;
+
+.Container {
+  width: 100%;
+  min-height: calc(100vh - 100px);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  .BottomNavigation {
+    background-color: var(--pink_100);
+    justify-content: flex-start;
+    margin-bottom: 10px;
+    max-width: max-content;
+    border-radius: 0.5rem;
+
+    .Mui-selected {
+      background-color: var(--white);
+      color: var(--pink_100);
+    }
+
+    
+    button {
+      color: var(--white);
+      &.Selected{
+        background-color: var(--white);
+        color: var(--pink_100);
+      }
+
+      span {
+        font-size: 1.6rem;
+        font-weight: bold;
+      }
+    }
+  }
+  .Products,
+  .Orders,
+  .Users {
+    .Btn {
+      margin-bottom: 10px;
+    }
+    width: 100%;
+  }
+}
+
+.Table {
+  // overflow-y: scroll;
+
+  .TableHead {
+    background-color: var(--pink_60);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+
+    .TableCell {
+      color: var(--white);
+      font-size: 2rem;
+      font-weight: bold;
+    }
+  }
+
+  .TableBody {
+    .TableRow:nth-child(even) {
+      background-color: $background_color;
+    }
+
+    .TableRow:hover {
+      background-color: $background_color_hover;
+      cursor: pointer;
+    }
+
+    .TableCell {
+      font-weight: 600;
+      font-size: 1.6rem;
+
+      img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+      }
+
+      &:last-child {
+        font-weight: bold;
+      }
+    }
+  }
+}

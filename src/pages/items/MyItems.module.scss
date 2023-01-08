@@ -1,0 +1,40 @@
+$background_color: #f0919623;
+$background_color_hover: #f0919675;
+.Container {
+  min-height: calc(100vh - 100px);
+  display: flex;
+  justify-content: center;
+  padding: 50px;
+}
+
+.TableHead {
+  background-color: var(--pink_60);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+
+  .TableCell {
+    color: var(--white);
+    font-size: 2rem;
+    font-weight: bold;
+  }
+}
+
+.TableBody {
+  .TableRow:nth-child(even) {
+    background-color: $background_color;
+  }
+
+  .TableRow:hover {
+    background-color: $background_color_hover;
+    cursor: pointer;
+  }
+
+  .TableCell {
+    font-weight: 600;
+    font-size: 1.6rem;
+
+    &:last-child {
+      font-weight: bold;
+    }
+  }
+}

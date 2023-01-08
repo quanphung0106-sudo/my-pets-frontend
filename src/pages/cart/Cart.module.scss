@@ -1,0 +1,34 @@
+.Container {
+  min-height: calc(100vh - 100px);
+  padding: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+.Wrapper {
+  width: 90%;
+
+  .Left {
+    .ButtonWrapper {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      gap: 5px;
+    }
+  }
+
+  .Right {
+    position: sticky;
+    top: 100px;
+    max-height: 400px;
+  }
+}
+
+.TextWrapper {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

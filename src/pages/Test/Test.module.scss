@@ -1,0 +1,46 @@
+body {
+  // padding: 20px;
+}
+.Container {
+  background-color: grey;
+
+  .Item {
+    background-color: aqua;
+    border: 2px solid violet;
+
+    &.Item1 {
+      font-weight: bold;
+      height: 100px;
+      max-height: 100px;
+    }
+
+    &.Item2 {
+      height: 800px;
+    }
+
+    &.Item3 {
+      height: 800px;
+
+      .Article {
+        border: 1px solid red;
+        background-color: cornflowerblue;
+      }
+    }
+    &.Item4 {
+      height: 100px;
+      max-height: 100px;
+    }
+  }
+}
+
+@media (min-width: 600px) and (max-width: 1203px) {
+  .Item2 {
+    max-height: 100px;
+  }
+  .Item3 {
+    max-height: 700px;
+  }
+}
+
+@media (max-width: 599px) {
+}

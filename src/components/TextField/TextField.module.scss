@@ -1,0 +1,180 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+@mixin border-color($border_color) {
+  border-color: var($border_color);
+}
+
+@mixin border-bottom-color($border-bottom-color) {
+  border-bottom: 2px solid var($border-bottom-color);
+}
+
+.InputField {
+  width: 100%;
+  height: 8rem;
+  max-height: 8rem;
+  caret-color: var(--pink_light);
+  margin-bottom: 10px;
+
+  // &:hover .LabelRoot {
+  //   transition: 0.2s;
+  //   color: var(--black_80);
+  // }
+
+  & input {
+    &::placeholder {
+      font-weight: 400;
+      font-size: 1.5rem;
+      color: var(--black_40);
+    }
+  }
+  // ---------------LABEL---------------
+
+  & .LabelRoot {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--black_60);
+  }
+
+  & .LabelFocused {
+    color: var(--pink_light) !important;
+  }
+
+  & .LabelDisabled {
+    color: var(--black_60) !important;
+  }
+
+  & .LabelError {
+    color: var(--error_dark) !important;
+  }
+
+  & .LabelRequired span {
+    color: var(--error_dark);
+  }
+
+  & svg {
+    margin-bottom: 2px;
+    width: 20px;
+    height: 20px;
+    color: var(--black_40);
+  }
+
+  &:hover svg {
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  &:focus-within svg {
+    color: var(--pink_light);
+  }
+
+  // ---------------HELPER TEXT---------------
+
+  & .HelperTextRoot {
+  }
+
+  & .HelperTextError {
+    font-size: 1.2rem;
+    margin-left: 0;
+    margin-top: 6px;
+  }
+}
+
+.LineTextField {
+  // ---------------INPUT---------------
+
+  & input {
+    padding: 6px 0 8px;
+  }
+
+  & div {
+    &:hover {
+      &::after {
+        @include border-bottom-color(--pink_100);
+      }
+    }
+  }
+
+  & .InputBaseRoot {
+    &:before {
+      @include border-bottom-color(--black_20);
+    }
+
+    &:after {
+      @include border-bottom-color(--pink_light);
+    }
+
+    &:hover {
+      &::before {
+        @include border-bottom-color(--black_60);
+      }
+    }
+  }
+
+  & .InputBaseFocused {
+    &::after {
+      border-bottom: 2px solid var(--pink_light) !important;
+    }
+  }
+
+  & .InputBaseDisabled {
+  }
+
+  & .InputBaseError {
+    &::after {
+      border-bottom: 2px solid var(--error_dark) !important;
+    }
+  }
+}
+
+.ContainedTextField {
+  margin-bottom: 2rem;
+  // ---------------INPUT---------------
+  & .LabelRoot {
+    font-size: 1.6rem;
+    transform: translate(0, -28px);
+  }
+
+  & .InputBaseRoot {
+    & .NoutchedOutline {
+      @include border-color(--black_10);
+    }
+
+    &:hover .NoutchedOutline {
+      @include border-color(--black_60);
+    }
+  }
+
+  & .InputBaseFocused {
+    & .NoutchedOutline {
+      border-color: var(--pink_light) !important;
+    }
+  }
+
+  & .InputBaseDisabled {
+  }
+
+  & .InputBaseError {
+    & .NoutchedOutline {
+      border-color: var(--error_dark) !important;
+    }
+  }
+
+  //remove the unnecessary line
+  & .NoutchedOutline {
+    top: 0;
+
+    & legend {
+      display: none;
+    }
+  }
+}

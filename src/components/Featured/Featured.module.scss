@@ -1,0 +1,94 @@
+@mixin flexBox($align, $justify) {
+  display: flex;
+  align-items: $align;
+  justify-content: $justify;
+  @content;
+}
+
+.Container {
+  @include flexBox(unset, center) {
+    height: calc(1000px - 100px);
+    background-color: var(--background);
+    padding: 5rem;
+  }
+
+  .ImgContainer {
+    @include flexBox(center, center) {
+      width: 75%;
+    }
+
+    .HomeBackground {
+      width: 90rem;
+      height: 100%;
+      position: relative;
+    }
+
+    .Items {
+      position: absolute;
+      height: calc(1000px - 100px);
+      padding: 5rem;
+
+      .Item:nth-child(1) {
+        @include flexBox(center, flex-end) {
+          animation-name: showText;
+          animation-duration: 1.5s;
+          animation-timing-function: ease-in-out;
+        }
+
+        .Texts {
+          width: 60%;
+          display: flex;
+          flex-direction: column;
+
+          h1 {
+            font-weight: bold;
+            color: var(--white);
+            font-size: 6.5rem;
+          }
+
+          p {
+            font-weight: bold;
+            color: var(--white);
+            font-size: 2.4rem;
+            margin: 15px 0;
+          }
+
+          button {
+            width: 22rem !important;
+            max-width: 28rem !important;
+          }
+        }
+      }
+
+      .Item:nth-child(2) {
+        @include flexBox(unset, center) {
+        }
+
+        img {
+          width: 45rem;
+          height: 45rem;
+          animation: showImage 1s ease-in-out;
+        }
+      }
+    }
+  }
+}
+
+@keyframes showImage {
+  from {
+    opacity: 0;
+    transform: scale(0.1);
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes showText {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

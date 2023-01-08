@@ -1,0 +1,81 @@
+@mixin flexBox($align, $justify) {
+  display: flex;
+  align-items: $align;
+  justify-content: $justify;
+  @content;
+}
+
+.Container {
+  max-width: 240px;
+  height: 38rem;
+  background-color: var(--pink_70);
+  border-radius: 5px;
+  justify-content: center;
+
+  .Top {
+    position: relative;
+    cursor: pointer;
+
+    img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .Sale {
+      position: absolute;
+      line-height: 25px;
+      text-align: center;
+      width: 4rem;
+      height: 2.5rem;
+      border-radius: 5px;
+      background-color: var(--pink_100);
+      color: var(--white);
+      right: -1rem;
+      top: -1rem;
+    }
+  }
+
+  .Bottom {
+    @include flexBox(center, flex-start) {
+      flex-direction: column;
+    }
+
+    h2 {
+      font-size: 2.2rem;
+      padding: 0 5px;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+      height: 5.5rem;
+    }
+
+    .Body1 {
+      font-size: 1.8rem;
+      color: white;
+      font-weight: bold;
+      padding-bottom: 20px;
+    }
+    
+    .Body2 {
+      font-size: 1.4rem;
+      font-weight: normal;
+      margin-left: 5px;
+    }
+
+    .Price {
+      font-weight: 500;
+      margin-right: 5px;
+    }
+
+    button {
+      text-transform: inherit;
+    }
+  }
+}
+
+.Loading {
+  height: calc(100vh - 100px);
+  width: 100vw;
+}

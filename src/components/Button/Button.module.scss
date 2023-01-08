@@ -1,0 +1,106 @@
+$button_Disabled: rgba(0, 0, 0, 0.26);
+
+.Href {
+  // width: fit-content;
+  text-decoration: none;
+}
+
+@mixin maxSize {
+  max-width: max-content;
+  max-height: max-content;
+  @content;
+}
+
+@mixin baseButton($border_radius) {
+  border-radius: $border_radius;
+  font-weight: 800;
+  box-shadow: var(--btnShadow-color);
+  @content;
+}
+
+.BaseButton {
+  font-size: 1.6rem;
+  min-width: 10rem;
+  max-height: 4rem;
+
+  &.SizeSmall {
+    @include maxSize() {
+      padding: 0.4rem 1rem;
+    }
+  }
+
+  &.SizeMedium {
+    @include maxSize() {
+      padding: 0.6rem 1.6rem;
+    }
+  }
+
+  &.SizeLarge {
+    @include maxSize() {
+      padding: 0.8rem 5rem;
+    }
+  }
+
+  &.primary {
+    @include baseButton(0.5rem) {
+      background-color: var(--pink_100);
+      color: var(--white);
+      border: 1px solid transparent;
+
+      &:hover {
+        background-color: var(--white);
+        color: var(--pink_100);
+      }
+
+      &.Disabled {
+        pointer-events: none;
+        color: var(--white) !important;
+        box-shadow: none !important;
+        background-color: var(--black_20) !important;
+      }
+    }
+
+    & svg {
+      color: var(--white);
+    }
+
+    &:hover svg {
+      color: var(--pink_100);
+    }
+  }
+
+  &.ghost {
+    @include baseButton(0.5rem) {
+      background-color: var(--white);
+      color: var(--pink_100);
+      border: 1px solid transparent;
+
+      &:hover {
+        background-color: var(--pink_100);
+        color: var(--white);
+      }
+
+      &.Disabled {
+        pointer-events: none;
+        color: var(--black_20) !important;
+        box-shadow: none !important;
+        background-color: transparent !important;
+        border-color: var(--black_20);
+      }
+    }
+  }
+  &.text {
+    @include baseButton(0) {
+      background-color: transparent;
+      box-shadow: none;
+      border-radius: none;
+      color: var(--black_60);
+      border-bottom: 2px solid var(--black_60);
+
+      &:hover {
+        color: var(--pink_100);
+        border-bottom: 2px solid var(--pink_100);
+      }
+    }
+  }
+}

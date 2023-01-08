@@ -1,0 +1,22 @@
+.Loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px 0;
+  gap: 15px;
+
+  h1 {
+    font-size: 3.2rem;
+    font-weight: bold;
+  }
+
+  .LoadingIcon {
+    border: 5px solid transparent;
+    border-top-color: var(--pink_light);
+    border-right-color: var(--pink_60);
+    border-bottom-color: var(--pink_100);
+    border-left-color: transparent;
+    border-radius: 50%;
+    color: transparent !important;
+  }
+}

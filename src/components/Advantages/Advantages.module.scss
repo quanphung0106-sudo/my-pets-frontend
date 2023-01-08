@@ -1,0 +1,78 @@
+@mixin flexBox($align, $justify) {
+  display: flex;
+  align-items: $align;
+  justify-content: $justify;
+  @content;
+}
+
+.Container {
+  @include flexBox(flex-start, center) {
+    background-color: var(--white);
+    flex-direction: column;
+    padding: 50px;
+  }
+
+  .ContentWrapper {
+    @include flexBox(center, center) {
+      flex-wrap: wrap;
+    }
+
+    .TextsWrapper {
+      @include flexBox(flex-start, center) {
+        margin-bottom: 5rem;
+      }
+
+      .IconWrapper {
+        @include flexBox(center, center) {
+          width: 6rem;
+          height: 6rem;
+          padding: 25px;
+          padding-top: 0;
+        }
+
+        img {
+          width: 40px;
+          height: 40px;
+          background-color: var(--pink_100);
+          border-radius: 50%;
+          padding: 10px;
+          object-fit: cover;
+        }
+      }
+
+      .Texts {
+        h1 {
+          margin-bottom: 25px;
+          font-size: 2rem;
+          font-weight: bold;
+        }
+
+        p {
+          font-style: italic;
+          font-weight: 400;
+        }
+      }
+    }
+  }
+}
+
+.BoxWrapper {
+  justify-content: center;
+  .Modal {
+    @include flexBox(flex-start, flex-start) {
+      flex-direction: column;
+      width: 60%;
+      max-width: 1200px;
+      background-color: #f09196;
+      padding: 25px;
+    }
+
+    h2 {
+      font-size: 2rem;
+      color: var(--white);
+      font-weight: 600;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+  }
+}

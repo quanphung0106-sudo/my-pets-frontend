@@ -1,0 +1,14 @@
+.Container {
+  min-height: 500px;
+  padding: 50px;
+
+  .Items {
+    display: flex;
+    padding-left: 30px;
+
+    &.Tablet {
+      justify-content: center;
+      padding: 0;
+    }
+  }
+}

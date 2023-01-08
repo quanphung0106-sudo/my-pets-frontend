@@ -1,0 +1,86 @@
+.ContentWrapper {
+  height: 44rem;
+  padding-top: 25px;
+
+  button {
+    min-width: 100%;
+  }
+
+  .Left {
+    display: flex;
+    justify-content: space-around;
+
+    & > div:first-of-type,
+    & > div:nth-of-type(2) {
+      padding: 0 15px;
+    }
+    & > div:first-of-type {
+      margin-bottom: 50px;
+    }
+
+    & > div:nth-of-type(2) {
+      .Btn {
+        margin-bottom: 10px;
+      }
+
+      .ExtraPrice {
+        display: flex;
+        gap: 10px;
+
+        div {
+          height: fit-content;
+        }
+      }
+    }
+
+    & > div:last-of-type {
+      width: 100%;
+    }
+  }
+
+  .Right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    img {
+      width: 30rem;
+      height: 30rem;
+      object-fit: cover;
+    }
+    h1 {
+      margin: 15px 0 10px;
+      font-size: 2.4rem;
+      font-weight: bold;
+    }
+  }
+}
+.ListExtras {
+  display: flex;
+  max-height: 18rem;
+  flex-wrap: wrap;
+  overflow: scroll;
+
+  li .Root {
+    width: 100%;
+    background-color: var(--black_10);
+
+    span {
+      width: 100%;
+      font-size: 1.6rem;
+      white-space: normal;
+
+      span {
+        display: inline-block;
+        width: 4.5rem;
+        color: var(--black_80);
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+@media (min-width: 46.25em) and (max-width: 63.9375em) {
+  .ContentWrapper {
+    height: 80rem;
+  }
+}

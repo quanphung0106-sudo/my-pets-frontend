@@ -1,0 +1,81 @@
+:root {
+  font-family: 'Nunito', sans-serif;
+
+  --black: #000;
+  --black_80: #323c47;
+  --black_60: #707683;
+  --black_40: #90a0b7;
+  --black_30: #4d4d4d;
+  --black_20: #c2cfe0;
+  --black_10: #e3edfa;
+
+  --background: #f2f2f2;
+
+  --white: #fff;
+
+  --pink_light: #e79296;
+  --pink_100: #ea666c;
+  --pink_90: #d45f65;
+  --pink_80: #b54e53;
+  --pink_70: #f1bdbf;
+  --pink_60: #f09196;
+  --pink_0: #f6e1e3;
+
+  --error_dark: #ff0000;
+  --correct: #008000;
+
+  --btnShadow-color: 0px 4px 10px rgba(133, 122, 123, 0.194);
+
+  --regular: 400;
+  --medium: 400;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.6rem;
+  line-height: 1.5;
+  font-style: normal;
+}
+
+//Scrollbar CSS
+html *::-webkit-scrollbar {
+  border-radius: 0;
+  width: 8px;
+}
+html *::-webkit-scrollbar {
+  border-radius: 0;
+  width: 8px;
+}
+
+html *::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+html *::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+html *::-webkit-scrollbar-track {
+  border-radius: 0;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+html *::-webkit-scrollbar-track {
+  border-radius: 0;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+//tablet
+@media (min-width: 46.25em) and (max-width: 63.9375em) {
+}

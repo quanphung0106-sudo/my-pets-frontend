@@ -1,0 +1,104 @@
+.Container {
+  min-height: calc(100vh - 100px);
+  padding: 50px;
+  display: flex;
+  justify-content: center;
+
+  .Wrapper {
+    width: 90%;
+
+    .Left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .ButtonWrapper {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 15px;
+        gap: 5px;
+
+        & > p {
+          font-weight: bold;
+          color: var(--error_dark);
+        }
+      }
+
+      .DeliveryState {
+        width: 80%;
+        height: 100px;
+        margin: 25px 0;
+
+        img {
+          width: 4rem;
+          height: 4rem;
+        }
+
+        .done,
+        .inProgress,
+        .undone {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .inProgress {
+          animation: inProgress 1s infinite alternate linear;
+        }
+
+        .inProgress .checkedIcon,
+        .undone .checkedIcon {
+          opacity: 0;
+        }
+
+        @keyframes inProgress {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        .undone {
+          opacity: 0.3;
+        }
+
+        .checkedIcon {
+          width: 2rem;
+          height: 2rem;
+        }
+      }
+    }
+
+    .Right {
+      .TotalWrapper {
+        position: sticky;
+        top: 100px;
+        background-color: var(--pink_60);
+        color: var(--white);
+        padding: 25px;
+        border-radius: 5px;
+
+        h1 {
+          font-size: 3.6rem;
+          font-weight: bold;
+          margin-bottom: 20px;
+        }
+
+        p {
+          font-size: 2.2rem;
+          font-weight: 700;
+          margin-bottom: 20px;
+        }
+
+        button {
+          margin-top: 20px;
+          min-width: 100%;
+        }
+      }
+    }
+  }
+}

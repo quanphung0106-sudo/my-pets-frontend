@@ -1,19 +1,18 @@
+import { useState } from 'react';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { Box, InputAdornment, Paper, Typography } from '@mui/material';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { useNavigate } from 'react-router-dom';
 
-import { ContainedTextField } from '~/components/TextField/TextField';
 import { formatDate } from '~/components/FormatDate/FormatDate';
-import styles from './SearchOrder.module.scss';
+import { ContainedTextField } from '~/components/TextField/TextField';
 import orderApi from '~/helpers/axios/orderApi';
-import Loading from '~/components/Loading/Loading';
+import styles from './SearchOrder.module.scss';
 
 const SearchOrder = () => {
   const navigate = useNavigate();

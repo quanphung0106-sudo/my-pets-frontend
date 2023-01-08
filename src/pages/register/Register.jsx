@@ -12,7 +12,6 @@ import {
   Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import axios from 'axios';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
@@ -60,7 +59,6 @@ export default function Register() {
     const { username, email, password } = values;
     setLoading(true);
     try {
-      // const res = await axios.post('http://localhost:8808/api/auth/register', { username, email, password });
       const res = await userApi.register({ username, email, password });
       setError(false);
       if (res.status === 200) return setSuccess(true);

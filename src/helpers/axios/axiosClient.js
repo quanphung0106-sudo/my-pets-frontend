@@ -4,6 +4,7 @@ import storage from "../localStorage";
 
 const baseAxios = axios.create({
   baseURL: process.env.REACT_APP_SERVER,
+  withCredentials: true
 });
 
 export const axiosClient = () => {

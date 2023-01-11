@@ -52,6 +52,11 @@ export default function Login() {
     setLoading(true);
     try {
       dispatch(loginStart());
+      // const res = await axios.post(
+      //   `${process.env.REACT_APP_SERVER}/auth/login`,
+      //   values,
+      //   { withCredentials: true }
+      // );
       const res = await userApi.login(values);
       console.log("res", res);
       storage.setAccessToken(res.data.accessToken);

@@ -6,6 +6,7 @@ import styles from './Search.module.scss'
 const Search = () => {
   return (
     <Grid container className={styles.Container}>
+    Hello
     </Grid>
   )
 }

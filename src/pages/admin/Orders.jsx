@@ -10,10 +10,13 @@ import { useNavigate } from 'react-router-dom';
 
 import Delete from '~/components/Delete/Delete';
 import Loading from '~/components/Loading/Loading';
+import useFetch from '~/hooks/useFetch';
 import styles from './Admin.module.scss';
 
-const Orders = ({ handleAlign, orders }) => {
+const Orders = ({ handleAlign }) => {
   const navigate = useNavigate();
+
+  const {data} = useFetch("orders")
 
   const columnOrders = [
     {
@@ -43,7 +46,7 @@ const Orders = ({ handleAlign, orders }) => {
 
   console.log('orders');
 
-  if (orders.length === 0) return <Loading />;
+  if (data.length === 0) return <Loading />;
   return (
     <Box className={styles.Orders}>
       <TableContainer component={Paper} className={styles.Table}>
@@ -60,7 +63,7 @@ const Orders = ({ handleAlign, orders }) => {
             </TableRow>
           </TableHead>
           <TableBody classes={{ root: styles.TableBody }}>
-            {orders.map((order) => (
+            {data.map((order) => (
               <TableRow
                 onClick={() => navigateToDetailOrder(order._id)}
                 key={order._id}

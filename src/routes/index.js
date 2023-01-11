@@ -89,7 +89,7 @@ export const routes = createBrowserRouter([
     path: '/admin/*',
     element: (
       <>
-        <Admin />,
+        <Admin />
         <ScrollToTop />
       </>
     ),

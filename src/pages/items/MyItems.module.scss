@@ -19,6 +19,10 @@ $background_color_hover: #f0919675;
   }
 }
 
+.TableContainer {
+  height: fit-content;
+}
+
 .TableBody {
   .TableRow:nth-child(even) {
     background-color: $background_color;

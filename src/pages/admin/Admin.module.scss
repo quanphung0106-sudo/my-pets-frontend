@@ -21,10 +21,9 @@ $background_color_hover: #f0919675;
       color: var(--pink_100);
     }
 
-    
     button {
       color: var(--white);
-      &.Selected{
+      &.Selected {
         background-color: var(--white);
         color: var(--pink_100);
       }
@@ -47,6 +46,7 @@ $background_color_hover: #f0919675;
 
 .Table {
   // overflow-y: scroll;
+  height: fit-content;
 
   .TableHead {
     background-color: var(--pink_60);

@@ -11,9 +11,9 @@ const userApi = {
     const url = '/auth/register';
     return axiosRequest.post(url, data);
   },
-  getAll(params) {
+  getAll() {
     const url = '/users';
-    return axiosRequest.get(url, { params });
+    return axiosRequest.get(url);
   },
   get(id) {
     const url = `/users/${id}`;

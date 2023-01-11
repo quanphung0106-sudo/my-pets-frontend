@@ -15,6 +15,10 @@ const orderApi = {
     const url = `/orders/${id}`;
     return axiosRequest.get(url);
   },
+  getByUserId(id) {
+    const url = `/orders/user/${id}`;
+    return axiosRequest.get(url);
+  },
   postNoUser(data) {
     const url = `/orders`;
     return baseAxios.post(url, data);

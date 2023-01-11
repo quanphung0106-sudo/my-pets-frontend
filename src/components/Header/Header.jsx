@@ -10,7 +10,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import styles from './Header.module.scss';
 import { logout } from '~/redux/userSlice';
 import { BaseButton } from '../Button/Button';
-import userApi from '~/helpers/axios/userApi';
+import {userApi} from '~/libs/helpers/axios';
 
 const Header = () => {
   const quantity = useSelector((state) => state.cart.quantity);

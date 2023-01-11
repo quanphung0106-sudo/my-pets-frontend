@@ -8,7 +8,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Box, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-import itemApi from '~/helpers/axios/itemApi';
+import {itemApi } from '~/libs/helpers/axios';
 import { addProduct } from '~/redux/cartSlice';
 import { BaseButton } from '../Button/Button';
 

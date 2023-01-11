@@ -13,7 +13,7 @@ import Paid from '~/assets/images/paid.png';
 import { BaseButton } from '~/components/Button/Button';
 import Loading from '~/components/Loading/Loading';
 import BaseTable from '~/components/Table/Table';
-import orderApi from '~/helpers/axios/orderApi';
+import { orderApi } from '~/libs/helpers/axios';
 import styles from './Order.module.scss';
 
 const Orders = () => {

@@ -13,7 +13,7 @@ import { BaseButton } from '~/components/Button/Button';
 import Delete from '~/components/Delete/Delete';
 import Loading from '~/components/Loading/Loading';
 import NewItem from '~/components/NewItem/NewItem';
-import itemApi from '~/helpers/axios/itemApi';
+import {itemApi } from '~/libs/helpers/axios';
 import styles from './Admin.module.scss';
 
 const Products = ({ handleAlign }) => {

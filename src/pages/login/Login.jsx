@@ -17,8 +17,8 @@ import * as Yup from "yup";
 import LoginImage from "~/assets/images/login-background.png";
 import { BaseButton } from "~/components/Button/Button";
 import { LineTextField } from "~/components/TextField/TextField";
-import userApi from "~/helpers/axios/userApi";
-import storage from "~/helpers/localStorage";
+import { userApi } from "~/libs/helpers/axios";
+import storage from "~/libs/helpers/localStorage";
 import { loginFail, loginStart, loginSuccess } from "~/redux/userSlice";
 import { messages } from "~/utils/messages";
 import styles from "./Login.module.scss";
@@ -58,7 +58,6 @@ export default function Login() {
       //   { withCredentials: true }
       // );
       const res = await userApi.login(values);
-      console.log("res", res);
       storage.setAccessToken(res.data.accessToken);
       dispatch(loginSuccess(res.data));
       if (res.data.isAdmin === true) {

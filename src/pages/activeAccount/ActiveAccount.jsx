@@ -7,7 +7,7 @@ import { BaseButton } from '~/components/Button/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
-import userApi from '~/helpers/axios/userApi';
+import {userApi} from '~/libs/helpers/axios';
 
 const ActiveAccount = () => {
   const [searchParam, setSearchParams] = useSearchParams();

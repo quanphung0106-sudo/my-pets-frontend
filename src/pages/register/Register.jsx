@@ -18,7 +18,7 @@ import * as Yup from 'yup';
 import RegisterImage from '~/assets/images/register-background.png';
 import { BaseButton } from '~/components/Button/Button';
 import { LineTextField } from '~/components/TextField/TextField';
-import userApi from '~/helpers/axios/userApi';
+import {userApi} from '~/libs/helpers/axios';
 import { messages } from '~/utils/messages';
 import styles from './Register.module.scss';
 

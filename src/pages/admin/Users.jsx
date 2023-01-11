@@ -9,9 +9,9 @@ import TableRow from "@mui/material/TableRow";
 
 import { BaseButton } from "~/components/Button/Button";
 import Delete from "~/components/Delete/Delete";
-import { formatDate } from "~/components/FormatDate/FormatDate";
 import Loading from "~/components/Loading/Loading";
-import useFetch from "~/hooks/useFetch";
+import useFetch from "~/libs/hooks/useFetch";
+import { formatDate } from "~/libs/utils";
 import styles from "./Admin.module.scss";
 
 const Users = ({ handleAlign }) => {

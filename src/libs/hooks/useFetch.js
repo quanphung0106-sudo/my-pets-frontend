@@ -1,11 +1,9 @@
-import itemApi from "~/helpers/axios/itemApi";
-import orderApi from "~/helpers/axios/orderApi";
-import userApi from "~/helpers/axios/userApi";
+import { itemApi, orderApi, userApi } from "~/libs/helpers/axios";
 
 const { useEffect } = require("react");
 const { useState } = require("react");
 
-const useFetch = (params) => {
+const useFetch = (params, id) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -20,7 +18,9 @@ const useFetch = (params) => {
             if (itemsRes.data) setData(itemsRes.data);
             break;
           case "orders":
-            const orderRes = await orderApi.getAll();
+            const orderRes = id
+              ? await orderApi.getByUserId(id)
+              : await orderApi.getAll();
             if (orderRes.data) setData(orderRes.data);
             break;
           case "users":

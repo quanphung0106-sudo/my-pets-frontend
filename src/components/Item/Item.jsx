@@ -1,10 +1,9 @@
 import { Box, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import itemApi from "~/helpers/axios/itemApi";
-import useFetch from "~/hooks/useFetch";
+import { itemApi } from '~/libs/helpers/axios';
+import useFetch from "~/libs/hooks/useFetch";
 import { BaseButton } from "../Button/Button";
 import Loading from "../Loading/Loading";
 import styles from "./Item.module.scss";

@@ -15,12 +15,12 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import { useNavigate } from "react-router-dom";
-import orderApi from "~/helpers/axios/orderApi";
 import { reset } from "~/redux/cartSlice";
 import { messages } from "~/utils/messages";
 import { BaseButton } from "../Button/Button";
 import { ContainedTextField } from "../TextField/TextField";
 import styles from "./Modal.module.scss";
+import { orderApi } from "~/libs/helpers/axios";
 
 const Modal = ({ total, setOpen, open }) => {
   const [error, setError] = useState("");

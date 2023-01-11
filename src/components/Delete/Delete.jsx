@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { itemApi } from '~/libs/helpers/axios';
 import styles from './style.module.scss';
-import itemApi from '~/helpers/axios/itemApi';
 
 const Delete = ({ id, callback }) => {
   const [anchorEl, setAnchorEl] = useState(null);

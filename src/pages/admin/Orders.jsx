@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Delete from '~/components/Delete/Delete';
 import Loading from '~/components/Loading/Loading';
-import useFetch from '~/hooks/useFetch';
+import useFetch from '~/libs/hooks/useFetch';
 import styles from './Admin.module.scss';
 
 const Orders = ({ handleAlign }) => {

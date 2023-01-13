@@ -5,11 +5,6 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-/* Firefox */
-input[type='number'] {
-  -moz-appearance: textfield;
-}
-
 @mixin border-color($border_color) {
   border-color: var($border_color);
 }
@@ -25,10 +20,10 @@ input[type='number'] {
   caret-color: var(--pink_light);
   margin-bottom: 10px;
 
-  // &:hover .LabelRoot {
-  //   transition: 0.2s;
-  //   color: var(--black_80);
-  // }
+  &:hover .LabelRoot {
+    transition: 0.2s;
+    color: var(--black_80);
+  }
 
   & input {
     &::placeholder {
@@ -137,7 +132,7 @@ input[type='number'] {
 }
 
 .ContainedTextField {
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   // ---------------INPUT---------------
   & .LabelRoot {
     font-size: 1.6rem;
@@ -146,7 +141,7 @@ input[type='number'] {
 
   & .InputBaseRoot {
     & .NoutchedOutline {
-      @include border-color(--black_10);
+      @include border-color(--black_20);
     }
 
     &:hover .NoutchedOutline {
@@ -161,6 +156,9 @@ input[type='number'] {
   }
 
   & .InputBaseDisabled {
+    & .NoutchedOutline {
+      border-color: var(--black_10) !important;
+    }
   }
 
   & .InputBaseError {

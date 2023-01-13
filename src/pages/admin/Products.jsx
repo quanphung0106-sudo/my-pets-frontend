@@ -57,6 +57,7 @@ const Products = ({ handleAlign }) => {
   }, []);
 
   const handleClickOpen = () => {
+    navigate('create');
     setOpen(true);
   };
 

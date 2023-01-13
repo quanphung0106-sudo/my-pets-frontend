@@ -58,7 +58,7 @@ const MyItem = () => {
     return align;
   };
 
-  if (loading) return <Loading />;
+  if (loading) return <Loading className={styles.Loading} />;
   return (
     <>
       <Box className={styles.Container}>

@@ -1,6 +1,13 @@
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import CloseIcon from "@mui/icons-material/Close";
-import { Box, Dialog, IconButton, ListItem, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Dialog,
+  IconButton,
+  ListItem,
+  Typography,
+} from "@mui/material";
 import Chip from "@mui/material/Chip";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -8,11 +15,15 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import * as Yup from "yup";
 
 import { BaseButton } from "~/components/Button/Button";
 import { ContainedTextField } from "~/components/TextField/TextField";
-import { itemApi } from '~/libs/helpers/axios';
+import { itemApi } from "~/libs/helpers/axios";
 import styles from "./NewItem.module.scss";
+import { useFieldArray, useForm, useWatch } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { messages } from "~/utils/messages";
 
 const initialState = {
   title: "",
@@ -23,8 +34,59 @@ const initialState = {
 
 const Modal = ({ open, setOpen, callback }) => {
   const [data, setData] = useState(initialState);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [extra, setExtra] = useState(null);
   const location = useLocation();
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+    clearErrors,
+    control,
+    watch,
+  } = useForm({
+    defaultValues: initialState,
+    mode: "all",
+    resolver: yupResolver(
+      Yup.object({
+        title: Yup.string()
+          .max(30, messages.minLength("Title", 30))
+          .required(messages.requiredField("Title")),
+        desc: Yup.string()
+          .max(270, messages.minLength("Title", 270))
+          .required(messages.requiredField("Description")),
+        img: Yup.mixed().required(messages.requiredField("Image")),
+        typeOfOptions: Yup.array().min(1, messages.min("Options", 1)).ensure(),
+      })
+    ),
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    name: "typeOfOptions",
+    control,
+  });
+
+  const optionsTitle = useWatch({
+    name: "typeOfOptions.title",
+    control,
+    exact: true,
+  });
+  const optionsPrice = useWatch({
+    name: "typeOfOptions.price",
+    control,
+    exact: true,
+  });
+
+  console.log({
+    optionsTitle,
+    optionsPrice,
+    fields,
+    // defaultValues: formState.defaultValues,
+    error: errors,
+  });
 
   function getDetailId() {
     if (typeof location === "undefined" || location.pathname.includes("/add"))
@@ -55,69 +117,33 @@ const Modal = ({ open, setOpen, callback }) => {
     getItemById();
   }, [id]);
 
-  const handleDelete = (index) => () => {
-    const options = data.typeOfOptions.filter((chips, chipsIndex) => {
-      return chipsIndex !== index;
-    });
-    setData((prev) => {
-      return {
-        ...prev,
-        typeOfOptions: [...options],
-      };
-    });
-  };
-
   const handleClose = () => {
+    setExtra(null);
+    if (id) {
+      setData(initialState);
+    }
+    setError(false);
     setOpen(false);
   };
 
-  const handleChange = (e) => {
-    setData((prev) => ({
-      ...prev,
-      [e.target.name]:
-        e.target.name === "img" ? e.target.files[0] : e.target.value,
-    }));
+  const previewImage = () => {
+    const previewImg = watch("img", false);
+    if (!previewImg) return "/img/pets.jpg";
+    if (typeof previewImg === "string") return previewImg;
+    return URL.createObjectURL(previewImg[0]);
   };
 
-  const handleChangeExtra = (e) => {
-    setExtra((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleExtra = () => {
-    setData((prev) => {
-      return {
-        ...prev,
-        typeOfOptions: [...prev.typeOfOptions, extra],
-      };
-    });
-  };
-
-  const renderImg = () => {
-    if (data.img) {
-      if (typeof data.img === "string") return data.img;
-      return URL.createObjectURL(data.img);
-    }
-    return "/img/pets.jpg";
-  };
-
-  const handlePost = async (imgRes, id) => {
-    const res = id
-      ? await itemApi.update(id, {
-          ...data,
-          img: imgRes.data.url,
-        })
-      : await itemApi.post({
-          ...data,
-          img: imgRes.data.url,
-        });
+  const handlePost = async (data, id) => {
+    const res = id ? await itemApi.update(id, data) : await itemApi.post(data);
     if (res.data) return res;
   };
 
-  const handleCreate = async () => {
+  const handleFormSubmit = async (values) => {
     const myData = new FormData();
-    myData.append("file", data.img);
+    myData.append("file", values.img[0]);
     myData.append("upload_preset", "pet-websites");
 
+    setLoading(true);
     try {
       const uploadRes = await axios.post(
         "https://api.cloudinary.com/v1_1/dw0r3ayk2/image/upload",
@@ -127,16 +153,16 @@ const Modal = ({ open, setOpen, callback }) => {
           withCredentials: false,
         }
       );
-      const res = id
-        ? await handlePost(uploadRes, id)
-        : await handlePost(uploadRes);
+      const res = await handlePost({ ...values, img: uploadRes.data.url });
       if ([200, 201].includes(res.status) && res.data) {
-        console.log(res.data);
+        setLoading(false);
+        reset();
         callback();
       }
       setOpen(false);
     } catch (err) {
       console.log(err);
+      setLoading(false);
     }
   };
 
@@ -159,23 +185,32 @@ const Modal = ({ open, setOpen, callback }) => {
       </DialogTitle>
       <DialogContent>
         <Grid container className={styles.ContentWrapper} rowGap={2}>
-          <Grid container className={styles.Left} sm={12} lg={8}>
+          <Grid
+            component="form"
+            onSubmit={handleSubmit(handleFormSubmit)}
+            container
+            className={styles.Left}
+            sm={12}
+            lg={8}
+          >
             <Grid sm={12} lg={6}>
               <ContainedTextField
-                onChange={handleChange}
                 label="Title"
                 name="title"
                 type="text"
                 placeholder="Siberian Husky"
-                value={data?.title ? data.title : ""}
+                {...register("title")}
+                helperText={errors.title?.message}
+                error={!!errors.title}
               />
               <ContainedTextField
-                onChange={handleChange}
                 label="Description"
                 name="desc"
                 type="text"
                 placeholder="The Siberian Husky is a medium-sized ..."
-                value={data?.desc ? data.desc : ""}
+                {...register("desc")}
+                helperText={errors.desc?.message}
+                error={!!errors.desc}
               />
               <BaseButton
                 primary
@@ -186,62 +221,107 @@ const Modal = ({ open, setOpen, callback }) => {
                 Upload
                 <input
                   hidden
-                  onChange={handleChange}
                   label="Image"
                   name="img"
                   type="file"
                   accept="image/*"
+                  {...register("img")}
                 />
               </BaseButton>
+              <Box component="span" className={styles.ErrorMessage}>
+                {errors.img?.message}
+              </Box>
             </Grid>
             <Grid sm={12} lg={6}>
               <Box className={styles.ExtraPrice}>
                 <ContainedTextField
-                  onChange={handleChangeExtra}
                   label="Extra Title"
                   name="title"
                   type="text"
                   placeholder="White Coat"
+                  {...register("typeOfOptions.title", {
+                    onChange: () => {
+                      clearErrors("typeOfOptions");
+                    },
+                  })}
+                  helperText={errors?.extraTitle?.message}
+                  error={errors.extraTitle?.message}
                 />
                 <ContainedTextField
-                  onChange={handleChangeExtra}
                   label="Price"
                   name="price"
                   type="number"
                   placeholder="50"
+                  {...register("typeOfOptions.price", {
+                    valueAsNumber: true,
+                    onChange: () => {
+                      clearErrors("typeOfOptions");
+                    },
+                  })}
+                  helperText={errors?.price?.message}
+                  error={errors.price?.message}
                 />
               </Box>
-              <BaseButton primary onClick={handleExtra} className={styles.Btn}>
+              <Box component="span" className={styles.ErrorMessage}>
+                {errors.typeOfOptions?.message}
+              </Box>
+              <BaseButton
+                className={styles.Btn}
+                primary
+                onClick={() => {
+                  if (
+                    optionsTitle !== undefined &&
+                    optionsTitle !== "" &&
+                    optionsPrice !== undefined &&
+                    !isNaN(optionsPrice)
+                  ) {
+                    append({
+                      title: optionsTitle,
+                      price: optionsPrice,
+                    });
+                  }
+                }}
+              >
                 Add
               </BaseButton>
               <Box className={styles.ListExtras}>
-                {data.typeOfOptions.map((data, index) => {
+                {fields.map((data, index) => {
                   return (
                     <ListItem key={index}>
                       <Chip
+                        name="typeOfOptions"
                         classes={{ root: styles.Root }}
                         label={
                           <>
                             <Typography variant="span">
                               ${data.price}
-                            </Typography>{" "}
+                            </Typography>
                             {data.title}
                           </>
                         }
-                        onDelete={handleDelete(index)}
+                        onDelete={() => remove(index)}
                       />
                     </ListItem>
                   );
                 })}
               </Box>
             </Grid>
-            <BaseButton primary size="large" onClick={handleCreate}>
+            <BaseButton
+              primary
+              size="large"
+              type="submit"
+              disableElevation
+              disabled={loading}
+              startIcon={loading && <CircularProgress size={20} />}
+            >
               {id ? " Update Item " : "Add product"}
             </BaseButton>
           </Grid>
           <Grid className={styles.Right} sm={12} lg={4}>
-            <img src={renderImg()} alt="preview" />
-            <Typography variant="h1">{data?.title}</Typography>
+            <img src={previewImage()} alt="preview" />
+            <Typography variant="h1">
+              {useWatch({ name: "title", control })}
+            </Typography>
           </Grid>
         </Grid>
       </DialogContent>

@@ -7,6 +7,10 @@ $background_color_hover: #f0919675;
   padding: 50px;
 }
 
+.Loading {
+  height: calc(100vh - 100px);
+}
+
 .TableHead {
   background-color: var(--pink_60);
   border-top-left-radius: 5px;

@@ -14,7 +14,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
 import * as Yup from "yup";
 
 import { BaseButton } from "~/components/Button/Button";
@@ -32,37 +31,29 @@ const initialState = {
   typeOfOptions: [],
 };
 
-const Modal = ({ open, setOpen, callback }) => {
-  const [data, setData] = useState(initialState);
-  const [error, setError] = useState(false);
+const Modal = ({ open, setOpen, callback, id }) => {
   const [loading, setLoading] = useState(false);
-  const [extra, setExtra] = useState(null);
-  const location = useLocation();
+  const title = id ? "Update Item" : "Create New Item";
 
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-    reset,
-    clearErrors,
-    control,
-    watch,
-  } = useForm({
-    defaultValues: initialState,
-    mode: "all",
-    resolver: yupResolver(
-      Yup.object({
-        title: Yup.string()
-          .max(30, messages.minLength("Title", 30))
-          .required(messages.requiredField("Title")),
-        desc: Yup.string()
-          .max(270, messages.minLength("Title", 270))
-          .required(messages.requiredField("Description")),
-        img: Yup.mixed().required(messages.requiredField("Image")),
-        typeOfOptions: Yup.array().min(1, messages.min("Options", 1)).ensure(),
-      })
-    ),
-  });
+  const { register, formState, handleSubmit, reset, clearErrors, control } =
+    useForm({
+      defaultValues: initialState,
+      mode: "all",
+      resolver: yupResolver(
+        Yup.object({
+          title: Yup.string()
+            .max(30, messages.minLength("Title", 30))
+            .required(messages.requiredField("Title")),
+          desc: Yup.string()
+            .max(270, messages.minLength("Title", 270))
+            .required(messages.requiredField("Description")),
+          img: Yup.mixed().required(messages.requiredField("Image")),
+          typeOfOptions: Yup.array()
+            .min(1, messages.min("Options", 1))
+            .ensure(),
+        })
+      ),
+    });
 
   const { fields, append, remove } = useFieldArray({
     name: "typeOfOptions",
@@ -79,55 +70,44 @@ const Modal = ({ open, setOpen, callback }) => {
     control,
     exact: true,
   });
+  const previewImg = useWatch({ name: "img", control });
 
   console.log({
-    optionsTitle,
-    optionsPrice,
+    // optionsTitle,
+    // optionsPrice,
     fields,
-    // defaultValues: formState.defaultValues,
-    error: errors,
+    defaultValues: formState.defaultValues,
+    error: formState.errors,
   });
-
-  function getDetailId() {
-    if (typeof location === "undefined" || location.pathname.includes("/add"))
-      return null;
-    if (location.pathname.includes("/edit")) {
-      const id = location.pathname.substring(
-        location.pathname.lastIndexOf("/") + 1
-      );
-      return id;
-    }
-  }
-
-  const id = getDetailId();
-  const title = id ? "Update Item" : "Create New Item";
 
   useEffect(() => {
     const getItemById = async () => {
       try {
-        if (id) {
+        if (open && id === null) {
+          reset(initialState);
+        } else if (open && id !== null) {
           const res = await itemApi.get(id);
-          if (res.data) return setData(res.data);
+          if (res.data) {
+            reset({
+              title: res.data.title,
+              desc: res.data.desc,
+              img: res.data.img,
+              typeOfOptions: res.data.typeOfOptions,
+            });
+          }
         }
-        setData(initialState);
       } catch (err) {
         console.log(err);
       }
     };
     getItemById();
-  }, [id]);
+  }, [id, reset, open]);
 
   const handleClose = () => {
-    setExtra(null);
-    if (id) {
-      setData(initialState);
-    }
-    setError(false);
     setOpen(false);
   };
 
   const previewImage = () => {
-    const previewImg = watch("img", false);
     if (!previewImg) return "/img/pets.jpg";
     if (typeof previewImg === "string") return previewImg;
     return URL.createObjectURL(previewImg[0]);
@@ -142,21 +122,32 @@ const Modal = ({ open, setOpen, callback }) => {
     const myData = new FormData();
     myData.append("file", values.img[0]);
     myData.append("upload_preset", "pet-websites");
-
     setLoading(true);
     try {
-      const uploadRes = await axios.post(
-        "https://api.cloudinary.com/v1_1/dw0r3ayk2/image/upload",
-        myData,
-        {
-          "Access-Control-Allow-Credentials": true,
-          withCredentials: false,
-        }
-      );
-      const res = await handlePost({ ...values, img: uploadRes.data.url });
+      const uploadRes =
+        typeof values.img === "string"
+          ? values.img
+          : await axios.post(
+              "https://api.cloudinary.com/v1_1/dw0r3ayk2/image/upload",
+              myData,
+              {
+                "Access-Control-Allow-Credentials": true,
+                withCredentials: false,
+              }
+            );
+      const res = id
+        ? await handlePost(
+            {
+              ...values,
+              img:
+                typeof values.img === "string" ? uploadRes : uploadRes.data.url,
+            },
+            id
+          )
+        : await handlePost({ ...values, img: uploadRes.data.url });
       if ([200, 201].includes(res.status) && res.data) {
         setLoading(false);
-        reset();
+        reset(initialState);
         callback();
       }
       setOpen(false);
@@ -200,8 +191,9 @@ const Modal = ({ open, setOpen, callback }) => {
                 type="text"
                 placeholder="Siberian Husky"
                 {...register("title")}
-                helperText={errors.title?.message}
-                error={!!errors.title}
+                helperText={formState.errors.title?.message}
+                error={!!formState.errors.title}
+                disabled={loading}
               />
               <ContainedTextField
                 label="Description"
@@ -209,14 +201,16 @@ const Modal = ({ open, setOpen, callback }) => {
                 type="text"
                 placeholder="The Siberian Husky is a medium-sized ..."
                 {...register("desc")}
-                helperText={errors.desc?.message}
-                error={!!errors.desc}
+                helperText={formState.errors.desc?.message}
+                error={!!formState.errors.desc}
+                disabled={loading}
               />
               <BaseButton
                 primary
                 size="large"
                 component="label"
                 endIcon={<CameraAltIcon />}
+                disabled={loading}
               >
                 Upload
                 <input
@@ -229,7 +223,7 @@ const Modal = ({ open, setOpen, callback }) => {
                 />
               </BaseButton>
               <Box component="span" className={styles.ErrorMessage}>
-                {errors.img?.message}
+                {formState.errors.img?.message}
               </Box>
             </Grid>
             <Grid sm={12} lg={6}>
@@ -244,8 +238,9 @@ const Modal = ({ open, setOpen, callback }) => {
                       clearErrors("typeOfOptions");
                     },
                   })}
-                  helperText={errors?.extraTitle?.message}
-                  error={errors.extraTitle?.message}
+                  helperText={formState.errors?.extraTitle?.message}
+                  error={formState.errors.extraTitle?.message}
+                  disabled={loading}
                 />
                 <ContainedTextField
                   label="Price"
@@ -258,16 +253,18 @@ const Modal = ({ open, setOpen, callback }) => {
                       clearErrors("typeOfOptions");
                     },
                   })}
-                  helperText={errors?.price?.message}
-                  error={errors.price?.message}
+                  helperText={formState.errors?.price?.message}
+                  error={formState.errors.price?.message}
+                  disabled={loading}
                 />
               </Box>
               <Box component="span" className={styles.ErrorMessage}>
-                {errors.typeOfOptions?.message}
+                {formState.errors.typeOfOptions?.message}
               </Box>
               <BaseButton
                 className={styles.Btn}
                 primary
+                disabled={loading}
                 onClick={() => {
                   if (
                     optionsTitle !== undefined &&
@@ -300,6 +297,7 @@ const Modal = ({ open, setOpen, callback }) => {
                           </>
                         }
                         onDelete={() => remove(index)}
+                        disabled={loading}
                       />
                     </ListItem>
                   );
@@ -318,7 +316,7 @@ const Modal = ({ open, setOpen, callback }) => {
             </BaseButton>
           </Grid>
           <Grid className={styles.Right} sm={12} lg={4}>
-            <img src={previewImage()} alt="preview" />
+            <img src={previewImage()} alt="preview" name="preview" />
             <Typography variant="h1">
               {useWatch({ name: "title", control })}
             </Typography>

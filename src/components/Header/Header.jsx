@@ -1,16 +1,16 @@
-import { useState } from 'react';
-import PhoneEnabledIcon from '@mui/icons-material/PhoneEnabled';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import Tippy from '@tippyjs/react/headless';
-import { Box } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
+import { useState } from "react";
+import PhoneEnabledIcon from "@mui/icons-material/PhoneEnabled";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import Tippy from "@tippyjs/react/headless";
+import { Box } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
 
-import styles from './Header.module.scss';
-import { logout } from '~/redux/userSlice';
-import { BaseButton } from '../Button/Button';
-import {userApi} from '~/libs/helpers/axios';
+import styles from "./Header.module.scss";
+import { logout } from "~/redux/userSlice";
+import { BaseButton } from "../Button/Button";
+import { userApi } from "~/libs/helpers/axios";
 
 const Header = () => {
   const quantity = useSelector((state) => state.cart.quantity);
@@ -26,14 +26,14 @@ const Header = () => {
 
   const navigateToAdminPage = () => {
     if (isAdmin === true) {
-      navigate('/admin/products');
+      navigate("/admin/products");
     }
   };
 
   const handleLogout = async () => {
     await userApi.logout();
     dispatch(logout());
-    navigate('/');
+    navigate("/");
   };
 
   return (
@@ -50,7 +50,7 @@ const Header = () => {
       <Grid
         className={styles.Item}
         sx={{
-          display: { xs: 'none', sm: 'none', lg: 'flex' },
+          display: { xs: "none", sm: "none", lg: "flex" },
         }}
         lg={6}
       >
@@ -76,7 +76,13 @@ const Header = () => {
         <Link to="/cart">
           <Grid className={styles.Cart}>
             <ShoppingCartIcon className={styles.CartIcon} />
-            {quantity === 0 ? '' : <Box className={styles.Counter}>{quantity}</Box>}
+            {quantity === 0 ? (
+              ""
+            ) : (
+              <Box className={styles.Counter}>
+                {quantity >= 10 ? "9+" : quantity}
+              </Box>
+            )}
           </Grid>
         </Link>
         {user ? (
@@ -88,7 +94,10 @@ const Header = () => {
                     <li className={styles.AccountItem}>My Order</li>
                   </Link>
                   {isAdmin && (
-                    <li onClick={navigateToAdminPage} className={styles.AccountItem}>
+                    <li
+                      onClick={navigateToAdminPage}
+                      className={styles.AccountItem}
+                    >
                       Manage
                     </li>
                   )}
@@ -104,7 +113,12 @@ const Header = () => {
             placement="bottom-start"
           >
             <div className={styles.AvatarContainer}>
-              <img onClick={visible ? hide : show} className={styles.Avatar} src="/img/my-avatar.jpg" alt="avatar" />
+              <img
+                onClick={visible ? hide : show}
+                className={styles.Avatar}
+                src="/img/my-avatar.jpg"
+                alt="avatar"
+              />
             </div>
           </Tippy>
         ) : (

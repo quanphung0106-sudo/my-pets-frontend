@@ -30,8 +30,6 @@ const Modal = ({ total, setOpen, open }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  console.log(user);
-
   const { register, formState, handleSubmit } = useForm({
     defaultValues: {
       customer: "",
@@ -71,6 +69,7 @@ const Modal = ({ total, setOpen, open }) => {
       total: product.total,
     }));
     const data = {
+      userId: user ? user?._id : null,
       products,
       total,
       customer,

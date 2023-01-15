@@ -49,7 +49,7 @@ const Products = ({ handleAlign }) => {
   };
 
   const getAllItems = async () => {
-    const res = await itemApi.getAll();
+    const res = await itemApi().getAll();
     setItems(res.data);
   };
 

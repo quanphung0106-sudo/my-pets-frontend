@@ -1,45 +1,26 @@
-import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
-import { Box, Typography } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
+import { Box, Typography } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 
-import Bake from '~/assets/images/bake.png';
-import Bike from '~/assets/images/bike.png';
-import Checked from '~/assets/images/checked.png';
-import Delivered from '~/assets/images/delivered.png';
-import Paid from '~/assets/images/paid.png';
-import { BaseButton } from '~/components/Button/Button';
-import Loading from '~/components/Loading/Loading';
-import BaseTable from '~/components/Table/Table';
-import { orderApi } from '~/libs/helpers/axios';
-import styles from './Order.module.scss';
+import Bake from "~/assets/images/bake.png";
+import Bike from "~/assets/images/bike.png";
+import Checked from "~/assets/images/checked.png";
+import Delivered from "~/assets/images/delivered.png";
+import Paid from "~/assets/images/paid.png";
+import { BaseButton } from "~/components/Button/Button";
+import Loading from "~/components/Loading/Loading";
+import BaseTable from "~/components/Table/Table";
+import useFetch from "~/libs/hooks/useFetch";
+import styles from "./Order.module.scss";
 
 const Orders = () => {
-  const [data, setData] = useState({});
   const user = useSelector((state) => state.user.user);
   const params = useParams();
-  const status = data.status;
-
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const getItemById = async () => {
-      try {
-        if (!user) {
-          const res = await orderApi.getNoUser(params.id);
-          if (res.data) setData(res.data);
-        } else {
-          const res = await orderApi.get(params.id);
-          if (res.data) setData(res.data);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getItemById();
-  }, [params.id, user]);
+  const { data } = useFetch("orders", params.id, user ? user : null);
+  const status = data.status;
 
   const statusClass = (index) => {
     if (index - status < 1) return styles.done;
@@ -49,41 +30,41 @@ const Orders = () => {
 
   const handleClick = () => {
     if (user) {
-      navigate('/my-items');
+      navigate("/my-items");
     } else {
-      navigate('/stranger-items');
+      navigate("/stranger-items");
     }
   };
 
   const columns = [
     {
-      name: 'Product',
-      align: 'left',
+      name: "Product",
+      align: "left",
       render: ({ img }) => <img src={img} alt="img" />,
     },
     {
-      name: 'Name',
-      align: 'center',
+      name: "Name",
+      align: "center",
       render: ({ title }) => <p>{title}</p>,
     },
     {
-      name: 'Type',
-      align: 'center',
+      name: "Type",
+      align: "center",
       render: ({ type }) => <p>{type}</p>,
     },
     {
-      name: 'Price',
-      align: 'right',
+      name: "Price",
+      align: "right",
       render: ({ price }) => <p>${price}</p>,
     },
     {
-      name: 'Quantity',
-      align: 'right',
+      name: "Quantity",
+      align: "right",
       render: ({ quantity }) => <p>{quantity}</p>,
     },
     {
-      name: 'Total',
-      align: 'right',
+      name: "Total",
+      align: "right",
       render: ({ total }) => <p>${total}</p>,
     },
   ];
@@ -93,11 +74,16 @@ const Orders = () => {
       <Grid container className={styles.Wrapper} columnSpacing={{ lg: 6 }}>
         <Grid className={styles.Left} sm={12} lg={8}>
           <Box className={styles.ButtonWrapper}>
-            <BaseButton startIcon={<ArrowBackOutlinedIcon />} primary onClick={handleClick}>
+            <BaseButton
+              startIcon={<ArrowBackOutlinedIcon />}
+              primary
+              onClick={handleClick}
+            >
               Back to order list
             </BaseButton>
             <Typography variant="body1">
-              *Warning: You should save the "Order Code" on the right side to check the order information.
+              *Warning: You should save the "Order Code" on the right side to
+              check the order information.
             </Typography>
           </Box>
           {data?.products ? (
@@ -106,22 +92,38 @@ const Orders = () => {
                 <Grid className={statusClass(0)} sm={3} lg={3}>
                   <img src={Paid} alt="Paid" />
                   <Box component="span">Payment</Box>
-                  <img className={styles.checkedIcon} src={Checked} alt="CheckedImg" />
+                  <img
+                    className={styles.checkedIcon}
+                    src={Checked}
+                    alt="CheckedImg"
+                  />
                 </Grid>
                 <Grid className={statusClass(1)} sm={3} lg={3}>
                   <img src={Bake} alt="Bake" />
                   <Box component="span">Preparing</Box>
-                  <img className={styles.checkedIcon} src={Checked} alt="CheckedImg" />
+                  <img
+                    className={styles.checkedIcon}
+                    src={Checked}
+                    alt="CheckedImg"
+                  />
                 </Grid>
                 <Grid className={statusClass(2)} sm={3} lg={3}>
                   <img src={Bike} alt="Bike" />
                   <Box component="span">On the way</Box>
-                  <img className={styles.checkedIcon} src={Checked} alt="CheckedImg" />
+                  <img
+                    className={styles.checkedIcon}
+                    src={Checked}
+                    alt="CheckedImg"
+                  />
                 </Grid>
                 <Grid className={statusClass(3)} sm={3} lg={3}>
                   <img src={Delivered} alt="Delivered" />
                   <Box component="span">Delivered</Box>
-                  <img className={styles.checkedIcon} src={Checked} alt="CheckedImg" />
+                  <img
+                    className={styles.checkedIcon}
+                    src={Checked}
+                    alt="CheckedImg"
+                  />
                 </Grid>
               </Grid>
               {data && <BaseTable columns={columns} dataSource={data} />}

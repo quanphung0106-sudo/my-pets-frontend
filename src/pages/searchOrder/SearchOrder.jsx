@@ -1,66 +1,68 @@
-import { useState } from 'react';
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import { Box, InputAdornment, Paper, Typography } from '@mui/material';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { Box, InputAdornment, Paper, Typography } from "@mui/material";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import { useNavigate } from "react-router-dom";
 
-import { ContainedTextField } from '~/components/TextField/TextField';
-import { orderApi } from '~/libs/helpers/axios';
-import styles from './SearchOrder.module.scss';
-import { formatDate } from '~/libs/utils';
+import { ContainedTextField } from "~/components/TextField/TextField";
+import { orderApi } from "~/libs/helpers/axios";
+import styles from "./SearchOrder.module.scss";
+import { formatDate } from "~/libs/utils";
 
 const SearchOrder = () => {
   const navigate = useNavigate();
 
   const [data, setData] = useState({});
-  const [id, setId] = useState('');
+  const [id, setId] = useState("");
+
   const getItemById = async () => {
     try {
-      const res = await orderApi.getNoUser(id);
+      const res = await orderApi().getNoUser(id);
       if (res.data) setData(res.data);
     } catch (err) {
       console.log(err);
     }
   };
+
   const navigateToDetailItem = () => {
     navigate(`/orders/${id}`);
   };
 
   const columns = [
     {
-      name: 'Order Code',
-      align: 'left',
+      name: "Order Code",
+      align: "left",
     },
     {
-      name: 'Customer',
-      align: 'center',
+      name: "Customer",
+      align: "center",
     },
     {
-      name: 'Address',
-      align: 'center',
+      name: "Address",
+      align: "center",
     },
     {
-      name: 'Method',
-      align: 'center',
+      name: "Method",
+      align: "center",
     },
     {
-      name: 'Order time',
-      align: 'center',
+      name: "Order time",
+      align: "center",
     },
     {
-      name: 'Total',
-      align: 'right',
+      name: "Total",
+      align: "right",
     },
   ];
 
   const handleAlign = (array, index, align) => {
-    if (index === 0) return 'left';
-    if (index === array.length - 1) return 'right';
+    if (index === 0) return "left";
+    if (index === array.length - 1) return "right";
     return align;
   };
 
@@ -102,7 +104,7 @@ const SearchOrder = () => {
                   onClick={navigateToDetailItem}
                   classes={{ root: styles.TableRow }}
                   sx={{
-                    '&:last-child td, &:last-child th': {
+                    "&:last-child td, &:last-child th": {
                       border: 0,
                     },
                   }}
@@ -110,16 +112,28 @@ const SearchOrder = () => {
                   <TableCell classes={{ root: styles.TableCell }} align="left">
                     {data._id}
                   </TableCell>
-                  <TableCell classes={{ root: styles.TableCell }} align="center">
+                  <TableCell
+                    classes={{ root: styles.TableCell }}
+                    align="center"
+                  >
                     {data.customer}
                   </TableCell>
-                  <TableCell classes={{ root: styles.TableCell }} align="center">
+                  <TableCell
+                    classes={{ root: styles.TableCell }}
+                    align="center"
+                  >
                     {data.address}
                   </TableCell>
-                  <TableCell classes={{ root: styles.TableCell }} align="center">
-                    {data.method === 0 ? 'Cash' : 'Visa'}
+                  <TableCell
+                    classes={{ root: styles.TableCell }}
+                    align="center"
+                  >
+                    {data.method === 0 ? "Cash" : "Visa"}
                   </TableCell>
-                  <TableCell classes={{ root: styles.TableCell }} align="center">
+                  <TableCell
+                    classes={{ root: styles.TableCell }}
+                    align="center"
+                  >
                     {formatDate(data.createdAt)}
                   </TableCell>
                   <TableCell classes={{ root: styles.TableCell }} align="right">
@@ -130,7 +144,9 @@ const SearchOrder = () => {
             </Table>
           </TableContainer>
         ) : (
-          <Typography variant="h4">*Enter your Order Code to track the order</Typography>
+          <Typography variant="h4">
+            *Enter your Order Code to track the order
+          </Typography>
         )}
       </Box>
     </Box>

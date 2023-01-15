@@ -8,27 +8,20 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Box, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
-import { itemApi } from "~/libs/helpers/axios";
+import useFetch from "~/libs/hooks/useFetch";
 import { addProduct } from "~/redux/cartSlice";
 import { BaseButton } from "../Button/Button";
+import Loading from "../Loading/Loading";
 
 const ItemDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [check, setCheck] = useState({});
-  const [data, setData] = useState({});
   const [price, setPrice] = useState(0);
   const [blockAdd, setBlockAdd] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const params = useParams();
-
-  useEffect(() => {
-    const getItemById = async () => {
-      const res = await itemApi.get(params.id);
-      setData(res.data);
-    };
-    getItemById();
-  }, [params.id]);
+  const { data, loading } = useFetch("items", params.id);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -76,6 +69,7 @@ const ItemDetail = () => {
     );
   };
 
+  if (loading) return <Loading />;
   return (
     <Grid container className={styles.Container}>
       <Grid className={styles.Left} xs={12} sm={6} lg={6}>

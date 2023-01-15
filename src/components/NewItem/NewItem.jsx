@@ -23,6 +23,7 @@ import styles from "./NewItem.module.scss";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { messages } from "~/utils/messages";
+import storage from "~/libs/helpers/localStorage";
 
 const initialState = {
   title: "",
@@ -72,13 +73,13 @@ const Modal = ({ open, setOpen, callback, id }) => {
   });
   const previewImg = useWatch({ name: "img", control });
 
-  console.log({
-    // optionsTitle,
-    // optionsPrice,
-    fields,
-    defaultValues: formState.defaultValues,
-    error: formState.errors,
-  });
+  // console.log({
+  //   // optionsTitle,
+  //   // optionsPrice,
+  //   fields,
+  //   defaultValues: formState.defaultValues,
+  //   error: formState.errors,
+  // });
 
   useEffect(() => {
     const getItemById = async () => {
@@ -114,7 +115,9 @@ const Modal = ({ open, setOpen, callback, id }) => {
   };
 
   const handlePost = async (data, id) => {
-    const res = id ? await itemApi.update(id, data) : await itemApi.post(data);
+    const res = id
+      ? await itemApi(storage.getAccessToken()).update(id, data)
+      : await itemApi(storage.getAccessToken()).post(data);
     if (res.data) return res;
   };
 

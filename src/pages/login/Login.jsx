@@ -52,13 +52,9 @@ export default function Login() {
     setLoading(true);
     try {
       dispatch(loginStart());
-      // const res = await axios.post(
-      //   `${process.env.REACT_APP_SERVER}/auth/login`,
-      //   values,
-      //   { withCredentials: true }
-      // );
-      const res = await userApi.login(values);
+      const res = await userApi().login(values);
       storage.setAccessToken(res.data.accessToken);
+      storage.setRefreshToken(res.data.refreshToken);
       dispatch(loginSuccess(res.data));
       if (res.data.isAdmin === true) {
         navigate("/admin");

@@ -1,42 +1,42 @@
-import EditIcon from '@mui/icons-material/Edit';
-import { Box, IconButton, Paper } from '@mui/material';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import { useNavigate } from 'react-router-dom';
+import EditIcon from "@mui/icons-material/Edit";
+import { Box, IconButton, Paper } from "@mui/material";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import { useNavigate } from "react-router-dom";
 
-import Delete from '~/components/Delete/Delete';
-import Loading from '~/components/Loading/Loading';
-import useFetch from '~/libs/hooks/useFetch';
-import styles from './Admin.module.scss';
+import Delete from "~/components/Delete/Delete";
+import Loading from "~/components/Loading/Loading";
+import useFetch from "~/libs/hooks/useFetch";
+import styles from "./Admin.module.scss";
 
 const Orders = ({ handleAlign }) => {
   const navigate = useNavigate();
 
-  const {data} = useFetch("orders")
+  const { data, loading } = useFetch("allOrders");
 
   const columnOrders = [
     {
-      name: 'Order Id',
+      name: "Order Id",
     },
     {
-      name: 'Customer',
-      align: 'center',
+      name: "Customer",
+      align: "center",
     },
     {
-      name: 'Total',
-      align: 'right',
+      name: "Total",
+      align: "right",
     },
     {
-      name: 'Payment',
-      align: 'center',
+      name: "Payment",
+      align: "center",
     },
     {
-      name: 'Action',
-      align: 'center',
+      name: "Action",
+      align: "center",
     },
   ];
 
@@ -44,9 +44,7 @@ const Orders = ({ handleAlign }) => {
     navigate(`/orders/${id}`);
   };
 
-  console.log('orders');
-
-  if (data.length === 0) return <Loading />;
+  if (loading) return <Loading />;
   return (
     <Box className={styles.Orders}>
       <TableContainer component={Paper} className={styles.Table}>
@@ -55,7 +53,11 @@ const Orders = ({ handleAlign }) => {
             <TableRow>
               {columnOrders.map((column, index) => {
                 return (
-                  <TableCell classes={{ root: styles.TableCell }} align={handleAlign(index, column.align)} key={index}>
+                  <TableCell
+                    classes={{ root: styles.TableCell }}
+                    align={handleAlign(index, column.align)}
+                    key={index}
+                  >
                     {column.name}
                   </TableCell>
                 );
@@ -69,7 +71,7 @@ const Orders = ({ handleAlign }) => {
                 key={order._id}
                 classes={{ root: styles.TableRow }}
                 sx={{
-                  '&:last-child td, &:last-child th': {
+                  "&:last-child td, &:last-child th": {
                     border: 0,
                   },
                 }}
@@ -84,9 +86,13 @@ const Orders = ({ handleAlign }) => {
                   ${order.total}
                 </TableCell>
                 <TableCell classes={{ root: styles.TableCell }} align="center">
-                  {order.method === 0 ? 'Cash' : 'Paid'}
+                  {order.method === 0 ? "Cash" : "Paid"}
                 </TableCell>
-                <TableCell onClick={(e) => e.stopPropagation()} classes={{ root: styles.TableCell }} align="center">
+                <TableCell
+                  onClick={(e) => e.stopPropagation()}
+                  classes={{ root: styles.TableCell }}
+                  align="center"
+                >
                   <IconButton>
                     <EditIcon />
                   </IconButton>

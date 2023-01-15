@@ -59,7 +59,7 @@ export default function Register() {
     const { username, email, password } = values;
     setLoading(true);
     try {
-      const res = await userApi.register({ username, email, password });
+      const res = await userApi().register({ username, email, password });
       setError(false);
       if (res.status === 200) return setSuccess(true);
     } catch (err) {

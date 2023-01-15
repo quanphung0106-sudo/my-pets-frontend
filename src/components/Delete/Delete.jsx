@@ -10,6 +10,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { itemApi } from "~/libs/helpers/axios";
 import styles from "./style.module.scss";
+import storage from "~/libs/helpers/localStorage";
 
 const Delete = ({ id, callback }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -27,7 +28,7 @@ const Delete = ({ id, callback }) => {
   const handleDeleteItem = async () => {
     setLoading(true);
     try {
-      const res = await itemApi.delete(id);
+      const res = await itemApi(storage.getAccessToken()).delete(id);
       if (res.status === 200) {
         callback();
       }

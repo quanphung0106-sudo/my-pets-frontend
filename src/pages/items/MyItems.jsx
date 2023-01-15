@@ -1,25 +1,21 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Box, Paper } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Box, Paper } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-import Loading from "~/components/Loading/Loading";
-import styles from "./MyItems.module.scss";
 import { useSelector } from "react-redux";
-import { formatDate } from "~/libs/utils";
-import { orderApi } from "~/libs/helpers/axios";
+import Loading from "~/components/Loading/Loading";
 import useFetch from "~/libs/hooks/useFetch";
+import { formatDate } from "~/libs/utils";
+import styles from "./MyItems.module.scss";
 
 const MyItem = () => {
   const user = useSelector((state) => state.user.user);
-  const { data, loading } = useFetch("orders", user?._id);
-
+  const { data, loading } = useFetch("orders", null, user);
   const navigate = useNavigate();
 
   const navigateToDetailItem = (id) => {
@@ -63,7 +59,10 @@ const MyItem = () => {
     <>
       <Box className={styles.Container}>
         {data.length !== 0 ? (
-          <TableContainer classes={{ root: styles.TableContainer }} component={Paper}>
+          <TableContainer
+            classes={{ root: styles.TableContainer }}
+            component={Paper}
+          >
             <Table sx={{ minWidth: 650 }}>
               <TableHead classes={{ root: styles.TableHead }}>
                 <TableRow>

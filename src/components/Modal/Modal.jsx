@@ -21,6 +21,7 @@ import { BaseButton } from "../Button/Button";
 import { ContainedTextField } from "../TextField/TextField";
 import styles from "./Modal.module.scss";
 import { orderApi } from "~/libs/helpers/axios";
+import storage from "~/libs/helpers/localStorage";
 
 const Modal = ({ total, setOpen, open }) => {
   const [error, setError] = useState("");
@@ -79,8 +80,8 @@ const Modal = ({ total, setOpen, open }) => {
     };
     try {
       const res = user
-        ? await orderApi.post(data)
-        : await orderApi.postNoUser(data);
+        ? await orderApi(storage.getAccessToken()).post(data)
+        : await orderApi().postNoUser(data);
       setError(false);
       if (res.status === 201) {
         dispatch(reset());

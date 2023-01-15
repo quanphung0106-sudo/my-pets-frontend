@@ -31,7 +31,7 @@ const Header = () => {
   };
 
   const handleLogout = async () => {
-    await userApi.logout();
+    await userApi().logout();
     dispatch(logout());
     navigate("/");
   };

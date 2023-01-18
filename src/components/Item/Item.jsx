@@ -2,15 +2,13 @@ import { Box, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Link } from "react-router-dom";
 
-import { itemApi } from '~/libs/helpers/axios';
+import { itemApi } from "~/libs/helpers/axios";
 import useFetch from "~/libs/hooks/useFetch";
 import { BaseButton } from "../Button/Button";
 import Loading from "../Loading/Loading";
 import styles from "./Item.module.scss";
 
-const Item = () => {
-  const { data, loading } = useFetch("items");
-
+const Item = ({ data, loading }) => {
   if (loading) return <Loading className={styles.Loading} />;
   return (
     <>

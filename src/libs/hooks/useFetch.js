@@ -5,8 +5,9 @@ import storage from "../helpers/localStorage";
 const { useEffect } = require("react");
 const { useState } = require("react");
 
-const useFetch = (params, id, user) => {
+const useFetch = (name, id, user, params) => {
   const [data, setData] = useState([]);
+  const [status, setStatus] = useState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -19,53 +20,65 @@ const useFetch = (params, id, user) => {
     }
   }, [id, user]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        switch (params) {
-          case "items":
-            const itemsRes = id
-              ? await itemApi().get(id)
-              : await itemApi().getAll();
-            if (itemsRes.data) setData(itemsRes.data);
-            break;
-          case "orders":
-            const ordersRes = await handleFetchOrders();
-            if (ordersRes.data) setData(ordersRes.data);
-            break;
-          case "allOrders":
-            const allOrdersRes = await orderApi(storage.getAccessToken()).getAll();
-            if (allOrdersRes.data) setData(allOrdersRes.data);
-            break;
-          case "users":
-            const userRes = await userApi(storage.getAccessToken()).getAll();
-            if (userRes.data) setData(userRes.data);
-            break;
-          default:
-            break;
-        }
-      } catch (err) {
-        console.log(err);
-        setError(err);
-      }
-      setLoading(false);
-    };
-    fetchData();
-  }, [params, id, handleFetchOrders]);
-
-  const reFetch = async () => {
+  const fetchData = async () => {
     setLoading(true);
     try {
-      //   const res = await callback();
-      //   if (res.data) setData(res.data);
+      switch (name) {
+        case "items":
+          const itemsRes = id
+            ? await itemApi().get(id)
+            : await itemApi().getAll(params);
+          if (itemsRes) {
+            setData(itemsRes.data);
+            setStatus(itemsRes.status);
+          }
+          if (itemsRes.status === 204) setData([]);
+          break;
+        case "orders":
+          const ordersRes = await handleFetchOrders();
+          if (ordersRes) {
+            setData(ordersRes.data);
+            setStatus(ordersRes.status);
+          }
+          if (ordersRes.status === 204) setData([]);
+          break;
+        case "allOrders":
+          const allOrdersRes = await orderApi(
+            storage.getAccessToken()
+          ).getAll();
+          if (allOrdersRes) {
+            setData(allOrdersRes.data);
+            setStatus(allOrdersRes.status);
+          }
+          if (allOrdersRes.status === 204) setData([]);
+          break;
+        case "users":
+          const userRes = await userApi(storage.getAccessToken()).getAll();
+          if (userRes) {
+            setData(userRes.data);
+            setStatus(userRes.status);
+          }
+          if (userRes.status === 204) setData([]);
+          break;
+        default:
+          break;
+      }
     } catch (err) {
+      console.log(err);
       setError(err);
     }
     setLoading(false);
   };
 
-  return { data, loading, error, reFetch };
+  useEffect(() => {
+    fetchData();
+  }, [name, id, handleFetchOrders]);
+
+  const reFetch = () => {
+    fetchData();
+  };
+
+  return { data, status, loading, error, reFetch };
 };
 
 export default useFetch;

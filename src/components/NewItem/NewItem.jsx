@@ -73,14 +73,6 @@ const Modal = ({ open, setOpen, callback, id }) => {
   });
   const previewImg = useWatch({ name: "img", control });
 
-  // console.log({
-  //   // optionsTitle,
-  //   // optionsPrice,
-  //   fields,
-  //   defaultValues: formState.defaultValues,
-  //   error: formState.errors,
-  // });
-
   useEffect(() => {
     const getItemById = async () => {
       try {
@@ -126,6 +118,9 @@ const Modal = ({ open, setOpen, callback, id }) => {
     myData.append("file", values.img[0]);
     myData.append("upload_preset", "pet-websites");
     setLoading(true);
+    const cheapestPrice = values.typeOfOptions.reduce((acc, initialValue) => {
+      return acc.price < initialValue.price ? acc : initialValue;
+    });
     try {
       const uploadRes =
         typeof values.img === "string"
@@ -144,10 +139,15 @@ const Modal = ({ open, setOpen, callback, id }) => {
               ...values,
               img:
                 typeof values.img === "string" ? uploadRes : uploadRes.data.url,
+              cheapestPrice: cheapestPrice.price,
             },
             id
           )
-        : await handlePost({ ...values, img: uploadRes.data.url });
+        : await handlePost({
+            ...values,
+            img: uploadRes.data.url,
+            cheapestPrice: cheapestPrice.price,
+          });
       if ([200, 201].includes(res.status) && res.data) {
         setLoading(false);
         reset(initialState);

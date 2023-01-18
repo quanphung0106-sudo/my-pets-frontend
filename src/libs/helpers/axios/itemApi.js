@@ -7,7 +7,7 @@ const itemApi = (accessToken) => {
       return baseAxios.get(url, { params });
     },
     get(id) {
-      const url = `/items/${id}`;
+      const url = `/items/find/${id}`;
       return baseAxios.get(url);
     },
     post(data) {

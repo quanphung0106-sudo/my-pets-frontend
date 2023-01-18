@@ -12,6 +12,7 @@ import useFetch from "~/libs/hooks/useFetch";
 import { addProduct } from "~/redux/cartSlice";
 import { BaseButton } from "../Button/Button";
 import Loading from "../Loading/Loading";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const ItemDetail = () => {
   const [quantity, setQuantity] = useState(1);
@@ -80,7 +81,13 @@ const ItemDetail = () => {
         >
           Go back
         </BaseButton>
-        <Box component="img" src={data.img} alt="detailItem" />
+        <LazyLoadImage
+          effect="blur"
+          width="100%"
+          delayTime={6000}
+          src={data.img}
+          alt="detailItem"
+        />
       </Grid>
       <Grid className={styles.Right} xs={12} sm={6} lg={6}>
         <Box className={styles.Texts}>

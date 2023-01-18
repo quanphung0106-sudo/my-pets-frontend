@@ -1,14 +1,139 @@
 .Container {
-  min-height: 500px;
   padding: 50px;
 
   .Search {
-    background-color: aqua;
+    position: sticky;
+    left: 0;
+    top: 150px;
+    width: 28rem;
+    max-width: 28rem;
+    height: 600px;
+    gap: 15px;
+
+    & h2 {
+      font-weight: 400;
+      font-size: 1.6rem;
+      line-height: 1.4;
+      color: var(--black_40);
+    }
+
+    & h2:first-child {
+      margin-bottom: 5px;
+    }
+
+    .Autocomplete {
+      max-height: 5.6rem;
+    }
+
+    .AutocompleteTextField {
+      margin-bottom: 0;
+    }
+
+    .RadioChecked {
+      color: var(--pink_100);
+    }
+
+    .Options {
+      & div div {
+        width: 9rem;
+        height: 5.6rem;
+      }
+    }
+
+    .SubmitBtn {
+      min-width: 100%;
+    }
+
+    &.Tablet {
+      display: none;
+    }
   }
 
   .Items {
-    display: flex;
-    padding-left: 30px;
+    flex: 1;
+    gap: 35px;
+
+    .Skeleton {
+      width: 240px;
+      height: 32rem;
+      max-height: 32rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      border-radius: 5px;
+    }
+
+    .Item {
+      width: 240px;
+      max-width: 240px;
+      max-height: 35rem;
+      border-radius: 5px;
+      background-color: var(--pink_70);
+
+      .Top {
+        position: relative;
+        cursor: pointer;
+
+        img {
+          width: 100%;
+          height: 200px;
+          object-fit: cover;
+          border-top-left-radius: 5px;
+          border-top-right-radius: 5px;
+        }
+
+        .Sale {
+          position: absolute;
+          line-height: 25px;
+          text-align: center;
+          width: 4rem;
+          height: 2.5rem;
+          border-radius: 5px;
+          background-color: var(--pink_100);
+          color: var(--white);
+          right: -1rem;
+          top: -1rem;
+        }
+      }
+
+      .Bottom {
+        padding: 10px 5px;
+
+        h2 {
+          font-size: 2rem;
+          color: var(--white);
+          font-weight: bold;
+          text-align: center;
+        }
+
+        .Body1 {
+          font-size: 1.6rem;
+          color: var(--white);
+          font-weight: bold;
+        }
+
+        .Body2 {
+          font-size: 1.4rem;
+          font-weight: normal;
+          margin-left: 5px;
+        }
+
+        .Price {
+          font-weight: 500;
+          margin-right: 5px;
+        }
+
+        button {
+          text-transform: inherit;
+        }
+      }
+    }
+
+    .Loading {
+      height: calc(100vh - 100px);
+      width: 100%;
+    }
 
     &.Tablet {
       justify-content: center;

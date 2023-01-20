@@ -79,7 +79,7 @@ const Modal = ({ open, setOpen, callback, id }) => {
         if (open && id === null) {
           reset(initialState);
         } else if (open && id !== null) {
-          const res = await itemApi.get(id);
+          const res = await itemApi().get(id);
           if (res.data) {
             reset({
               title: res.data.title,

@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Clear from "@mui/icons-material/Clear";
 import {
-  Autocomplete, CircularProgress,
+  Autocomplete,
+  CircularProgress,
   FormControl,
   FormControlLabel,
   IconButton,
@@ -13,9 +14,8 @@ import {
   Stack,
   Typography,
   useMediaQuery,
-  useTheme
+  useTheme,
 } from "@mui/material";
-import { motion } from "framer-motion";
 import { Controller, useForm } from "react-hook-form";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link } from "react-router-dom";
@@ -44,25 +44,20 @@ const Products = () => {
     params
   );
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    control,
-    reset,
-    resetField,
-  } = useForm({
-    defaultValues: initialState,
-    mode: "all",
-    resolver: yupResolver(
-      Yup.object({
-        title: Yup.string(),
-        sort: Yup.string(),
-        min: Yup.string(),
-        max: Yup.string(),
-      })
-    ),
-  });
+  const { register, handleSubmit, watch, control, reset, resetField } = useForm(
+    {
+      defaultValues: initialState,
+      mode: "all",
+      resolver: yupResolver(
+        Yup.object({
+          title: Yup.string(),
+          sort: Yup.string(),
+          min: Yup.string(),
+          max: Yup.string(),
+        })
+      ),
+    }
+  );
 
   const watchValue = watch();
 
@@ -296,18 +291,13 @@ const Products = () => {
               <Stack className={styles.Item} key={data._id}>
                 <Stack className={styles.Top}>
                   <Link to={`/products/${data._id}`}>
-                    <motion.div
-                      whileHover={{ scale: 1.1 }}
-                      // whileTap={{ scale: 0.9 }}
-                    >
-                      <LazyLoadImage
-                        effect="blur"
-                        alt="items"
-                        width="100%"
-                        height="200px"
-                        src={data.img}
-                      />
-                    </motion.div>
+                    <LazyLoadImage
+                      effect="blur"
+                      alt="items"
+                      width="100%"
+                      height="200px"
+                      src={data.img}
+                    />
                   </Link>
                   {data.sellItem !== 0 ? (
                     <Typography variant="body1" className={styles.Sale}>

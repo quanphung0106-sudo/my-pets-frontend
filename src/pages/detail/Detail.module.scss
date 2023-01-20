@@ -1,7 +1,184 @@
 .Container {
   min-height: calc(100vh - 100px);
-  padding: 50px;
-  display: flex;
-  align-items: center; 
-  justify-content: center;
+  padding: 25px 100px;
+
+  .Left {
+    height: 50rem;
+    .LightBox {
+      & :global(.yarl__carousel_with_slides) {
+        --yarl__carousel_padding_px: 0 !important;
+      }
+      & :global(.yarl__thumbnails_container) {
+        padding: 0 !important;
+      }
+
+      & :global(.yarl__thumbnails_wrapper) {
+        width: 65rem;
+        height: 45rem;
+        margin-bottom: 8px;
+      }
+
+      & :global(.yarl__container) {
+        background-color: var(--white);
+        position: relative;
+      }
+
+      & :global(.yarl__thumbnails_bottom .yarl__thumbnails_vignette) {
+        height: 100%;
+        background: linear-gradient(
+          transparent var(--yarl__thumbnails_vignette_size, 12%)
+            calc(100% - var(--yarl__thumbnails_vignette_size, 12%))
+        );
+      }
+
+      & :global(.yarl__thumbnails_container) {
+        background-color: var(--white);
+      }
+
+      & :global(.yarl__thumbnails_thumbnail) {
+        background-color: var(--white);
+      }
+    }
+
+    .LightBox {
+      &.yarl__container {
+        background-color: var(--white);
+      }
+    }
+  }
+
+  .Right {
+    height: 50rem;
+
+    .Texts {
+      width: 100%;
+      height: 100%;
+      h1 {
+        font-size: 4.3rem;
+        font-weight: bold;
+      }
+
+      .Prices {
+        font-size: 3rem;
+        font-weight: 600;
+
+        .SellPrice {
+          width: 6rem;
+          height: 3rem;
+          text-align: center;
+          font-size: 1.8rem;
+          background-color: var(--pink_100);
+          color: var(--white);
+          line-height: 30px;
+          border-radius: 3px;
+        }
+
+        .Price {
+          p {
+            font-size: 3rem;
+            font-weight: 600;
+          }
+          del {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-right: 10px;
+            margin-left: 15px;
+          }
+        }
+      }
+
+      & > p {
+        color: #212529;
+        font-size: 1.8rem;
+      }
+
+      .Quantity {
+        .Numbers::-webkit-outer-spin-button,
+        .Numbers::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+
+        .Numbers {
+          width: 7rem;
+          height: 4rem;
+          text-align: center;
+          outline: none;
+          font-size: 1.6rem;
+          border: none;
+          border: 1px solid var(--black_20);
+          background-color: transparent;
+        }
+
+        .AdjustQuantity {
+          height: 4rem;
+          width: 4rem;
+          font-size: 2rem;
+          background-color: transparent;
+          border: 1px solid var(--black_20);
+          outline: none;
+        }
+
+        p {
+          color: var(--black_40);
+          margin-left: 15px;
+        }
+      }
+
+      .Types {
+        font-size: 1.8rem;
+        gap: 10px;
+        flex-wrap: wrap;
+        .Extras {
+          margin-right: 5px;
+
+          .Options {
+            width: 2rem;
+            height: 2rem;
+            margin-right: 5px;
+            outline: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            -o-appearance: none;
+            appearance: none;
+            border: 1px solid var(--black_40);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .Options:checked::before {
+            background-color: var(--pink_100);
+            width: 2rem;
+            height: 2rem;
+            font-size: 1.4rem;
+            content: "\2713";
+            text-align: center;
+            color: var(--white);
+            position: absolute;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 74.9375em) {
+  .LightBox {
+    & :global(.yarl__container) {
+      height: 35rem;
+    }
+
+    & :global(.yarl__thumbnails_track) {
+      button {
+        height: 8rem;
+        width: 8rem;
+      }
+    }
+  }
+
+  .Payment {
+    flex-direction: row;
+  }
 }

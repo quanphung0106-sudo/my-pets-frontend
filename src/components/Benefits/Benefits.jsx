@@ -1,58 +1,105 @@
-import { useState, useEffect } from 'react';
-import Grid from '@mui/material/Unstable_Grid2';
-
-import styles from './Benefits.module.scss';
-import { Box, Typography } from '@mui/material';
-import { BaseButton } from '../Button/Button';
-import Pet from '~/assets/images/pet.png';
-import Pets from '~/assets/images/pets.jpg';
+import { Stack, Typography } from "@mui/material";
+import { motion, useAnimationControls } from "framer-motion";
+import { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
+import Pet from "~/assets/images/pet.png";
+import Pets from "~/assets/images/pets.jpg";
+import { BaseButton } from "../Button/Button";
+import styles from "./Benefits.module.scss";
 
 const Benefits = () => {
-  const [scrollY, setScrollY] = useState(false);
+  const { ref, inView } = useInView();
+  const animation = useAnimationControls();
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY >= 890 && window.scrollY < 1521) {
-        setScrollY(true);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  });
+    if (inView === true) {
+      animation.start({
+        opacity: 1,
+        transition: {
+          type: "spring",
+          duration: 0.8,
+          bounce: 0.3,
+        },
+      });
+    } else {
+      animation.start({
+        opacity: 0,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView]);
 
   return (
-    <Grid container className={styles.Container}>
-      <Grid className={styles.Item} lg={12}>
-        {scrollY ? (
-          <Box className={styles.ImgWrapper}>
-            <img className={`${styles.active}`} src={Pet} alt="pet" />
-          </Box>
-        ) : (
-          ''
-        )}
-      </Grid>
-      <Grid className={styles.Item} lg={12}>
-        <Box className={styles.ModalContainer}>
-          {scrollY ? (
-            <Box className={`${styles.ModalWrapper} ${styles.activeModalWrapper}`}>
+    <Stack ref={ref} className={styles.Container}>
+      <motion.div animate={animation}>
+        <Stack className={styles.Item}>
+          <motion.div
+            animate={{ width: inView ? "85rem" : "75rem" }}
+            transition={
+              inView && {
+                duration: 0.8,
+                delay: 0.2,
+                ease: [0, 0.71, 0.2, 1.01],
+                type: "spring",
+                bounce: 0.3,
+              }
+            }
+            className={styles.ImgWrapper}
+          >
+            <motion.img
+              animate={
+                inView ? { opacity: 1, scale: 1 } : { opacity: 0.5, scale: 0 }
+              }
+              transition={
+                inView && {
+                  duration: 0.8,
+                  delay: 0.2,
+                  ease: [0, 0.71, 0.2, 1.01],
+                  type: "spring",
+                  bounce: 0.3,
+                }
+              }
+              src={Pet}
+              alt="pet"
+            />
+          </motion.div>
+        </Stack>
+        <Stack className={styles.Item}>
+          <Stack className={styles.ModalContainer}>
+            <Stack
+              component={motion.div}
+              animate={inView ? { opacity: 1, x: 0 } : { opacity: 0.5, x: 100 }}
+              transition={
+                inView && {
+                  duration: 0.8,
+                  delay: 0.2,
+                  ease: [0, 0.71, 0.2, 1.01],
+                }
+              }
+              className={styles.ModalWrapper}
+            >
               <Typography variant="h1">Why Dogs Make You Happy</Typography>
               <Typography variant="body1">
-                Quam nulla porttitor massa id neque aliquam vestibulum morbi. Eu consequat ac felis donec et odio
-                pellentesque. Turpis nunc eget lorem dolor sed. Ornare quam viverra orci sagittis eu volutpat odio. Sed
-                vulputate odio ut enim blandit volutpat.
+                Quam nulla porttitor massa id neque aliquam vestibulum morbi. Eu
+                consequat ac felis donec et odio pellentesque. Turpis nunc eget
+                lorem dolor sed. Ornare quam viverra orci sagittis eu volutpat
+                odio. Sed vulputate odio ut enim blandit volutpat.
               </Typography>
               <BaseButton ghost>READ MORE</BaseButton>
-            </Box>
-          ) : (
-            ''
-          )}
+            </Stack>
 
-          {scrollY ? (
-            <Box className={`${styles.TextWrapper} ${styles.active}`}>
+            <Stack
+              component={motion.div}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0.5, y: 100 }}
+              transition={
+                inView && {
+                  duration: 0.8,
+                  delay: 0.2,
+                  ease: [0, 0.71, 0.2, 1.01],
+                }
+              }
+              className={styles.TextWrapper}
+            >
               <Typography variant="h1">Dogs improve your mood:</Typography>
               <ul>
                 <li>Duis are iruhe dolor in</li>
@@ -60,16 +107,27 @@ const Benefits = () => {
                 <li>Utenim ad minim</li>
                 <li>Lorem ipsum dolor</li>
               </ul>
-            </Box>
-          ) : (
-            ''
-          )}
-        </Box>
-      </Grid>
-      <Grid className={styles.Item} lg={12}>
-        {scrollY ? <img className={`${styles.active}`} src={Pets} alt="pet" /> : ''}
-      </Grid>
-    </Grid>
+            </Stack>
+          </Stack>
+        </Stack>
+        <Stack className={styles.Item}>
+          <motion.img
+            animate={inView ? { opacity: 1 } : { opacity: 0 }}
+            transition={
+              inView && {
+                duration: 0.8,
+                delay: 0.2,
+                ease: [0, 0.71, 0.2, 1.01],
+                type: "spring",
+                bounce: 0.3,
+              }
+            }
+            src={Pets}
+            alt="pet"
+          />
+        </Stack>
+      </motion.div>
+    </Stack>
   );
 };
 

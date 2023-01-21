@@ -1,3 +1,15 @@
+//Progress bar
+.ProgressBar {
+  position: fixed;
+  top: 100px;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: var(--pink_100);
+  transform-origin: 0%;
+  z-index: 999;
+}
+
 .Container {
   padding: 50px;
 

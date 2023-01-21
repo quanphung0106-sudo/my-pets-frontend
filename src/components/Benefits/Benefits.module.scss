@@ -17,10 +17,6 @@
         width: 32rem;
         height: 32rem;
         margin-right: -200px;
-
-        &.active {
-          animation: zoom 1s ease-in-out;
-        }
       }
     }
   }
@@ -37,7 +33,6 @@
       display: flex;
       justify-content: center;
       flex-direction: row-reverse;
-      transition: .5s;
     }
 
     .ModalWrapper {
@@ -50,11 +45,6 @@
       padding: 50px 40px;
       color: var(--white);
       z-index: 10;
-
-      &.activeModalWrapper {
-        animation: flexItem 1s ease-in-out;
-        animation-direction: alternate;
-      }
 
       h1 {
         font-size: 2.4rem;
@@ -90,21 +80,16 @@
       }
 
       ul li::before {
-        content: '✓';
+        content: "✓";
         color: var(--pink_100);
         font-weight: bold;
         margin-right: 10px;
-      }
-
-      &.active {
-        animation: flexText 1s ease-in-out;
-        animation-direction: alternate;
       }
     }
   }
 
   .Item:nth-child(3) {
-    height: 20rem;
+    // height: 20rem;
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
@@ -112,49 +97,7 @@
     img {
       width: 45rem;
       height: 30rem;
-
-      &.active {
-        animation: scaleImg 1s ease-in-out;
-      }
     }
-  }
-}
-
-@keyframes zoom {
-  from {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes scaleImg {
-  from {
-    opacity: 0;
-    transform: rotate(90deg) scale(0.1);
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes flexItem {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes flexText {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
   }
 }
 
@@ -166,7 +109,7 @@
   }
 
   .Item:nth-child(2) {
-    .ModalWrapper { 
+    .ModalWrapper {
       min-width: 38rem;
       min-height: 50rem;
       justify-content: space-around;

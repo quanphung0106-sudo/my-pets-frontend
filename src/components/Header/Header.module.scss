@@ -10,7 +10,6 @@
 
   .Item {
     align-items: center;
-    gap: 1.5rem;
 
     .Texts {
       .Text:first-child {
@@ -23,7 +22,7 @@
       }
     }
 
-    &:nth-child(2) {
+    &.Nav {
       justify-content: space-around;
 
       ul {
@@ -65,7 +64,7 @@
         .CartIcon {
           font-size: 2.6rem;
         }
-        
+
         .Counter {
           font-size: 1.2rem;
           position: absolute;
@@ -126,7 +125,51 @@
         text-decoration: none;
       }
     }
+    a {
+      text-decoration: none;
+      color: var(--black);
+    }
+  }
+}
 
+//tablet
+@media (min-width: 46.25em) and (max-width: 63.9375em) {
+  .Container {
+    .Item:first-child {
+      display: none;
+    }
+    .Nav {
+      align-items: flex-start;
+    }
+  }
+}
+
+//mobile
+@media (max-width: 46.25em) {
+  .Container {
+    padding: 20px;
+    .Item:first-child {
+      display: none;
+    }
+    .Item.Nav {
+      display: none;
+    }
+  }
+
+  .DrawerRoot {
+    .DrawerPaper {
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    button {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+
+  .List {
+    width: 100%;
     a {
       text-decoration: none;
       color: var(--black);

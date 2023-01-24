@@ -2,7 +2,7 @@
   background-color: var(--pink_light);
   height: calc(100vh - 100px);
   display: flex;
-  
+
   .Left {
     .ImgContainer {
       display: flex;
@@ -26,7 +26,7 @@
     .Texts {
       padding: 3rem;
       color: var(--white);
-      
+
       h1 {
         font-weight: bold;
         font-size: 2.2rem;
@@ -43,6 +43,18 @@
       p {
         font-weight: 500;
         line-height: 1.6;
+      }
+    }
+  }
+}
+
+//mobile
+@media screen and (max-width: 46.25em) {
+  .Container {
+    height: 100vh;
+    .Right {
+      .Texts {
+        padding: 2rem;
       }
     }
   }

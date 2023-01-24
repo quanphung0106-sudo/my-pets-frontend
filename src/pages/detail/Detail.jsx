@@ -75,7 +75,7 @@ const Detail = () => {
 
   const source = [
     {
-      src: "http://res.cloudinary.com/dw0r3ayk2/image/upload/v1673866819/pet-websites/eohthyibkrlh53dlo5tw.jpg",
+      src: data?.img,
     },
     {
       src: "https://img.freepik.com/free-photo/sleeping-beagle-dog-puppy-blue-background_1150-18196.jpg?w=1380&t=st=1674202953~exp=1674203553~hmac=31beac34ed4989db62b9811adfe9a4a6b204dafe21da6bc4363d909313a7647d",

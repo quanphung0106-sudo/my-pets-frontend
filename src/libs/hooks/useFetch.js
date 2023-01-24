@@ -1,9 +1,6 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { itemApi, orderApi, userApi } from "~/libs/helpers/axios";
 import storage from "../helpers/localStorage";
-
-const { useEffect } = require("react");
-const { useState } = require("react");
 
 const useFetch = (name, id, user, params) => {
   const [data, setData] = useState([]);

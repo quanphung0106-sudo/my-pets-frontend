@@ -102,3 +102,12 @@
     }
   }
 }
+
+//tablet
+@media screen and (min-width: 46.25em) and (max-width: 63.9375em) {
+  .Container {
+    .Wrapper {
+      gap: 20px;
+    }
+  }
+}

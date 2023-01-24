@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { Box, InputAdornment, Paper, Typography } from "@mui/material";
 import Table from "@mui/material/Table";
@@ -7,24 +8,46 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-
+import * as Yup from "yup";
 import { ContainedTextField } from "~/components/TextField/TextField";
 import { orderApi } from "~/libs/helpers/axios";
-import styles from "./SearchOrder.module.scss";
 import { formatDate } from "~/libs/utils";
+import { messages } from "~/utils/messages";
+import styles from "./SearchOrder.module.scss";
 
 const SearchOrder = () => {
-  const navigate = useNavigate();
-
   const [data, setData] = useState({});
+  const [error, setError] = useState();
   const [id, setId] = useState("");
+  const navigate = useNavigate();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({
+    defaultValues: {
+      id: "",
+    },
+    mode: "all",
+    resolver: yupResolver(
+      Yup.object({
+        id: Yup.string().required(messages.requiredField("Order code")),
+      })
+    ),
+  });
 
-  const getItemById = async () => {
+  const getItemById = async ({ id }) => {
     try {
       const res = await orderApi().getNoUser(id);
-      if (res.data) setData(res.data);
+      if (res.data) {
+        setData(res.data);
+        setId(id);
+        setError(false);
+      }
     } catch (err) {
+      setError(true);
       console.log(err);
     }
   };
@@ -69,19 +92,45 @@ const SearchOrder = () => {
   return (
     <Box className={styles.Container}>
       <Box className={styles.ContentWrapper}>
-        <ContainedTextField
-          placeholder="637cb4xxxxxxxx"
-          onChange={(e) => setId(e.target.value)}
-          type="text"
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <SearchOutlinedIcon onClick={getItemById} />
-              </InputAdornment>
-            ),
-          }}
-        />
-        {Object.keys(data).length !== 0 ? (
+        <Box>
+          <Typography variant="h4">
+            *Enter your Order Code to track the order
+          </Typography>
+          <ContainedTextField
+            placeholder="637cb4xxxxxxxx"
+            {...register("id")}
+            type="text"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <SearchOutlinedIcon onClick={handleSubmit(getItemById)} />
+                </InputAdornment>
+              ),
+            }}
+            helperText={errors.id?.message}
+            error={!!errors.id}
+            className={styles.TextField}
+          />
+        </Box>
+        {error && (
+          <Box
+            display="flex"
+            justifyContent="center"
+            width="100%"
+            height="calc(100vh - 100px)"
+          >
+            <Typography
+              variant="h2"
+              fontSize="3.6rem"
+              fontWeight={600}
+              color="var(--black_40)"
+              sx={{ userSelect: "none" }}
+            >
+              The order you looking for is not exist.
+            </Typography>
+          </Box>
+        )}
+        {Object.keys(data).length !== 0 && !error && (
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }}>
               <TableHead classes={{ root: styles.TableHead }}>
@@ -143,10 +192,6 @@ const SearchOrder = () => {
               </TableBody>
             </Table>
           </TableContainer>
-        ) : (
-          <Typography variant="h4">
-            *Enter your Order Code to track the order
-          </Typography>
         )}
       </Box>
     </Box>

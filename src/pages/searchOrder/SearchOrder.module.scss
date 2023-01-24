@@ -14,8 +14,8 @@ $background_color_hover: #f0919675;
   flex-direction: column;
   align-items: center;
 
-  & > div:first-child {
-    width: 28rem;
+  & .TextField {
+    margin-top: 8px;
   }
 
   h4 {
@@ -53,5 +53,12 @@ $background_color_hover: #f0919675;
     &:last-child {
       font-weight: bold;
     }
+  }
+}
+
+//mobile
+@media screen and (max-width: 46.25em) {
+  .Container {
+    padding: 25px;
   }
 }

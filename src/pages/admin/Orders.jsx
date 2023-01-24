@@ -1,5 +1,4 @@
-import EditIcon from "@mui/icons-material/Edit";
-import { Box, IconButton, Paper } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -8,15 +7,16 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useNavigate } from "react-router-dom";
 
-import Delete from "~/components/Delete/Delete";
 import Loading from "~/components/Loading/Loading";
 import useFetch from "~/libs/hooks/useFetch";
+import { UpdateStatus } from "./Action";
+import Delete from "./Action/Delete";
 import styles from "./Admin.module.scss";
 
 const Orders = ({ handleAlign }) => {
   const navigate = useNavigate();
 
-  const { data, loading } = useFetch("allOrders");
+  const { data, loading, reFetch } = useFetch("allOrders");
 
   const columnOrders = [
     {
@@ -27,12 +27,16 @@ const Orders = ({ handleAlign }) => {
       align: "center",
     },
     {
-      name: "Total",
-      align: "right",
-    },
-    {
       name: "Payment",
       align: "center",
+    },
+    {
+      name: "Status",
+      align: "center",
+    },
+    {
+      name: "Total",
+      align: "right",
     },
     {
       name: "Action",
@@ -42,6 +46,14 @@ const Orders = ({ handleAlign }) => {
 
   const navigateToDetailOrder = (id) => {
     navigate(`/orders/${id}`);
+  };
+
+  
+
+  const handleConvertStatus = (status) => {
+    if (status === 0) return "Preparing";
+    if (status === 1) return "On the way";
+    if (status === 2) return "Delivered";
   };
 
   if (loading) return <Loading />;
@@ -82,21 +94,22 @@ const Orders = ({ handleAlign }) => {
                 <TableCell classes={{ root: styles.TableCell }} align="center">
                   {order.customer}
                 </TableCell>
-                <TableCell classes={{ root: styles.TableCell }} align="right">
-                  ${order.total}
-                </TableCell>
                 <TableCell classes={{ root: styles.TableCell }} align="center">
                   {order.method === 0 ? "Cash" : "Paid"}
+                </TableCell>
+                <TableCell classes={{ root: styles.TableCell }} align="center">
+                  {handleConvertStatus(order.status)}
+                </TableCell>
+                <TableCell classes={{ root: styles.TableCell }} align="right">
+                  ${order.total}
                 </TableCell>
                 <TableCell
                   onClick={(e) => e.stopPropagation()}
                   classes={{ root: styles.TableCell }}
                   align="center"
                 >
-                  <IconButton>
-                    <EditIcon />
-                  </IconButton>
-                  <Delete />
+                  <UpdateStatus data={data} id={order._id} callback={reFetch} />
+                  <Delete id={order._id} name="orders" callback={reFetch} />
                 </TableCell>
               </TableRow>
             ))}

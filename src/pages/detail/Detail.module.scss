@@ -27,6 +27,13 @@
         align-items: center;
       }
 
+      & :global(.yarl__slide) {
+        img {
+          min-width: 65rem !important;
+          max-height: 45rem !important;
+        }
+      }
+
       & :global(.yarl__thumbnails_bottom .yarl__thumbnails_vignette) {
         height: 100%;
         background: linear-gradient(
@@ -186,11 +193,11 @@
     .Left {
       .LightBox {
         & :global(.yarl__thumbnails_wrapper) {
-          width: 85rem;
-          margin-bottom: 8px;
+          width: 80rem;
         }
         & :global(.yarl__slide) {
           img {
+            min-width: 80rem !important;
             max-height: 45rem !important;
           }
         }

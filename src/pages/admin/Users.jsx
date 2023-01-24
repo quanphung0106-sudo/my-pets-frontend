@@ -8,14 +8,14 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
 import { BaseButton } from "~/components/Button/Button";
-import Delete from "~/components/Delete/Delete";
 import Loading from "~/components/Loading/Loading";
 import useFetch from "~/libs/hooks/useFetch";
 import { formatDate } from "~/libs/utils";
+import Delete from "./Action/Delete";
 import styles from "./Admin.module.scss";
 
 const Users = ({ handleAlign }) => {
-  const { data } = useFetch("users");
+  const { data, reFetch } = useFetch("users");
 
   const column = [
     {
@@ -117,7 +117,7 @@ const Users = ({ handleAlign }) => {
                       <IconButton>
                         <EditIcon />
                       </IconButton>
-                      <Delete id={data._id} />
+                      <Delete id={data._id} name="users" callback={reFetch} />
                     </TableCell>
                   </TableRow>
                 );

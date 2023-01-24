@@ -10,10 +10,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { BaseButton } from "~/components/Button/Button";
-import Delete from "~/components/Delete/Delete";
 import Loading from "~/components/Loading/Loading";
-import NewItem from "~/components/NewItem/NewItem";
 import { itemApi } from "~/libs/helpers/axios";
+import { CreateAndUpdate } from "./Action";
+import Delete from "./Action/Delete";
 import styles from "./Admin.module.scss";
 
 const Products = ({ handleAlign }) => {
@@ -65,7 +65,7 @@ const Products = ({ handleAlign }) => {
   if (items.length === 0) return <Loading />;
   return (
     <Box>
-      <NewItem open={open} setOpen={setOpen} callback={getAllItems} id={id} />
+      <CreateAndUpdate open={open} setOpen={setOpen} callback={getAllItems} id={id} />
       <Box className={styles.Products}>
         <BaseButton
           primary
@@ -127,7 +127,7 @@ const Products = ({ handleAlign }) => {
                       classes={{ root: styles.TableCell }}
                       align="center"
                     >
-                      ${item.typeOfOptions[0].price}-{" "}
+                      ${item.typeOfOptions[0].price}-
                       {item.typeOfOptions[item.typeOfOptions.length - 1].price}
                     </TableCell>
                     <TableCell
@@ -140,7 +140,11 @@ const Products = ({ handleAlign }) => {
                       >
                         <EditIcon />
                       </IconButton>
-                      <Delete id={item._id} callback={getAllItems} />
+                      <Delete
+                        id={item._id}
+                        name="products"
+                        callback={getAllItems}
+                      />
                     </TableCell>
                   </TableRow>
                 );

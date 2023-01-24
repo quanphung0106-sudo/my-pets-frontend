@@ -24,8 +24,9 @@ $background_color_hover: #f0919675;
     button {
       color: var(--white);
       &.Selected {
-        background-color: var(--white);
+        background-color: var(--pink_70);
         color: var(--pink_100);
+        border-radius: 0.5rem;
       }
 
       span {

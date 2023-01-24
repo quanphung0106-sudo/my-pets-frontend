@@ -19,7 +19,7 @@ import * as Yup from "yup";
 import { BaseButton } from "~/components/Button/Button";
 import { ContainedTextField } from "~/components/TextField/TextField";
 import { itemApi } from "~/libs/helpers/axios";
-import styles from "./NewItem.module.scss";
+import styles from "./CreateAndUpdate.module.scss";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { messages } from "~/utils/messages";
@@ -32,7 +32,7 @@ const initialState = {
   typeOfOptions: [],
 };
 
-const Modal = ({ open, setOpen, callback, id }) => {
+const CreateAndUpdate = ({ open, setOpen, callback, id }) => {
   const [loading, setLoading] = useState(false);
   const title = id ? "Update Item" : "Create New Item";
 
@@ -329,4 +329,4 @@ const Modal = ({ open, setOpen, callback, id }) => {
     </Dialog>
   );
 };
-export default Modal;
+export default CreateAndUpdate;

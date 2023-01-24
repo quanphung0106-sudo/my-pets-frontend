@@ -26,6 +26,10 @@ const orderApi = (accessToken) => {
       const url = `/orders`;
       return axiosClient(accessToken).post(url, data);
     },
+    updateStatus(id, data) {
+      const url = `/orders/${id}`;
+      return axiosClient(accessToken).put(url, data);
+    },
     delete(id) {
       const url = `/orders/${id}`;
       return axiosClient(accessToken).delete(url, id);

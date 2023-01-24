@@ -28,14 +28,6 @@ const Orders = () => {
     if (index - status > 1) return styles.undone;
   };
 
-  const handleClick = () => {
-    if (user) {
-      navigate("/my-items");
-    } else {
-      navigate("/stranger-items");
-    }
-  };
-
   const columns = [
     {
       name: "Product",
@@ -77,7 +69,7 @@ const Orders = () => {
             <BaseButton
               startIcon={<ArrowBackOutlinedIcon />}
               primary
-              onClick={handleClick}
+              onClick={() => navigate(-1)}
             >
               Back to order list
             </BaseButton>

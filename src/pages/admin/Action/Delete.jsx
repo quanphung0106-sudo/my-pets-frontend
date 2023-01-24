@@ -8,11 +8,11 @@ import React, { useState } from "react";
 import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { itemApi } from "~/libs/helpers/axios";
+import { itemApi, orderApi, userApi } from "~/libs/helpers/axios";
 import styles from "./style.module.scss";
 import storage from "~/libs/helpers/localStorage";
 
-const Delete = ({ id, callback }) => {
+const Delete = ({ id, name, callback }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [loading, setLoading] = useState(false);
   const openPopover = Boolean(anchorEl);
@@ -28,9 +28,22 @@ const Delete = ({ id, callback }) => {
   const handleDeleteItem = async () => {
     setLoading(true);
     try {
-      const res = await itemApi(storage.getAccessToken()).delete(id);
-      if (res.status === 200) {
-        callback();
+      switch (name) {
+        case "products":
+          const productRes = await itemApi(storage.getAccessToken()).delete(id);
+          if (productRes.status === 200) callback();
+          break;
+        case "orders":
+          const orderRes = await orderApi(storage.getAccessToken()).delete(id);
+          if (orderRes.status === 200) callback();
+          break;
+        case "users":
+          const userRes = await userApi(storage.getAccessToken()).delete(id);
+          if (userRes.status === 200) callback();
+          break;
+
+        default:
+          break;
       }
     } catch (err) {
       console.log(err);

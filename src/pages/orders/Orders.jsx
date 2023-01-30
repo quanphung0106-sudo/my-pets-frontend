@@ -1,147 +1,117 @@
-import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
-import { Box, Typography } from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2";
-import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { Stack, Typography } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 
-import Bake from "~/assets/images/bake.png";
-import Bike from "~/assets/images/bike.png";
-import Checked from "~/assets/images/checked.png";
-import Delivered from "~/assets/images/delivered.png";
-import Paid from "~/assets/images/paid.png";
-import { BaseButton } from "~/components/Button/Button";
-import Loading from "~/components/Loading/Loading";
-import BaseTable from "~/components/Table/Table";
+import { useSelector } from "react-redux";
+import BaseDataGrid from "~/components/BaseDataGrid/BaseDataGrid";
 import useFetch from "~/libs/hooks/useFetch";
-import styles from "./Order.module.scss";
+import { formatDate } from "~/libs/utils";
+import styles from "./Orders.module.scss";
 
 const Orders = () => {
   const user = useSelector((state) => state.user.user);
-  const params = useParams();
+  const { data } = useFetch("orders", null, user);
   const navigate = useNavigate();
-  const { data } = useFetch("orders", params.id, user ? user : null);
-  const status = data.status;
-
-  const statusClass = (index) => {
-    if (index - status < 1) return styles.done;
-    if (index - status === 1) return styles.inProgress;
-    if (index - status > 1) return styles.undone;
-  };
 
   const columns = [
     {
-      name: "Product",
+      field: "id",
+      headerName: "ID",
+      flex: 0.5,
+    },
+    {
+      field: "idOrder",
+      headerName: "Order Code",
+      sortable: false,
+      minWidth: 240,
+      flex: 1,
+      renderCell: (params) => (
+        <Link to={`/orders/${params.row.idOrder}`}>
+          <Typography fontSize="14px">{params.value}</Typography>
+        </Link>
+      ),
+    },
+    {
+      field: "address",
+      headerName: "Address",
+      headerAlign: "left",
       align: "left",
-      render: ({ img }) => <img src={img} alt="img" />,
+      minWidth: 150,
+      flex: 1,
     },
     {
-      name: "Name",
-      align: "center",
-      render: ({ title }) => <p>{title}</p>,
+      field: "method",
+      headerName: "Method",
+      headerAlign: "left",
+      align: "left",
+      minWidth: 80,
+      flex: 1,
+      renderCell: (params) => (params.value === 0 ? "Cash" : "Paypal"),
     },
     {
-      name: "Type",
-      align: "center",
-      render: ({ type }) => <p>{type}</p>,
-    },
-    {
-      name: "Price",
+      field: "createdAt",
+      headerName: "Order Time",
+      headerAlign: "right",
       align: "right",
-      render: ({ price }) => <p>${price}</p>,
+      sortable: false,
+      minWidth: 200,
+      flex: 1,
+      renderCell: (params) => formatDate(params.value),
     },
     {
-      name: "Quantity",
+      field: "updatedAt",
+      headerName: "Updated Time",
+      headerAlign: "right",
       align: "right",
-      render: ({ quantity }) => <p>{quantity}</p>,
+      sortable: false,
+      minWidth: 200,
+      flex: 1,
+      renderCell: (params) => formatDate(params.value),
     },
     {
-      name: "Total",
+      field: "total",
+      headerName: "Total",
+      headerAlign: "right",
       align: "right",
-      render: ({ total }) => <p>${total}</p>,
+      sortable: false,
+      minWidth: 100,
+      flex: 1,
+      renderCell: (params) => (
+        <Typography fontSize="14px" fontWeight="bold">
+          {params.value}
+        </Typography>
+      ),
     },
   ];
 
+  const orderList = data.userOrders?.map((order, index) => {
+    return {
+      id: ++index,
+      idOrder: order._id,
+      address: order.address,
+      method: order.method,
+      createdAt: order.createdAt,
+      updatedAt: order.updatedAt,
+      total: order.totalPrice,
+    };
+  });
+
   return (
-    <Box className={styles.Container}>
-      <Grid container className={styles.Wrapper} columnSpacing={{ lg: 6 }}>
-        <Grid className={styles.Left} sm={12} lg={8}>
-          <Box className={styles.ButtonWrapper}>
-            <BaseButton
-              startIcon={<ArrowBackOutlinedIcon />}
-              primary
-              onClick={() => navigate(-1)}
-            >
-              Back to order list
-            </BaseButton>
-            <Typography variant="body1">
-              *Warning: You should save the "Order Code" on the right side to
-              check the order information.
-            </Typography>
-          </Box>
-          {data?.products ? (
-            <>
-              <Grid container className={styles.DeliveryState}>
-                <Grid className={statusClass(0)} sm={3} lg={3}>
-                  <img src={Paid} alt="Paid" />
-                  <Box component="span">Payment</Box>
-                  <img
-                    className={styles.checkedIcon}
-                    src={Checked}
-                    alt="CheckedImg"
-                  />
-                </Grid>
-                <Grid className={statusClass(1)} sm={3} lg={3}>
-                  <img src={Bake} alt="Bake" />
-                  <Box component="span">Preparing</Box>
-                  <img
-                    className={styles.checkedIcon}
-                    src={Checked}
-                    alt="CheckedImg"
-                  />
-                </Grid>
-                <Grid className={statusClass(2)} sm={3} lg={3}>
-                  <img src={Bike} alt="Bike" />
-                  <Box component="span">On the way</Box>
-                  <img
-                    className={styles.checkedIcon}
-                    src={Checked}
-                    alt="CheckedImg"
-                  />
-                </Grid>
-                <Grid className={statusClass(3)} sm={3} lg={3}>
-                  <img src={Delivered} alt="Delivered" />
-                  <Box component="span">Delivered</Box>
-                  <img
-                    className={styles.checkedIcon}
-                    src={Checked}
-                    alt="CheckedImg"
-                  />
-                </Grid>
-              </Grid>
-              {data && <BaseTable columns={columns} dataSource={data} />}
-            </>
-          ) : (
-            <Loading />
-          )}
-        </Grid>
-        <Grid className={styles.Right} sm={12} lg={4}>
-          <Box className={styles.TotalWrapper}>
-            <Typography variant="h1">Order Information</Typography>
-            <Box component="span">Order Code:</Box>
-            <Typography variant="body1">{data._id}</Typography>
-            <Box component="span">Customer:</Box>
-            <Typography variant="body1">{data.customer}</Typography>
-            <Box component="span">Address:</Box>
-            <Typography variant="body1">{data.address}</Typography>
-            <Box component="span">Total:</Box>
-            <Typography variant="body1">${data.total}</Typography>
-            <BaseButton disabled primary>
-              PAID!
-            </BaseButton>
-          </Box>
-        </Grid>
-      </Grid>
-    </Box>
+    <>
+      <Stack className={styles.Container} justifyContent="center">
+        <BaseDataGrid
+          classes={{
+            row: styles.DataGridRow,
+            cell: styles.DataGridCell,
+          }}
+          data={data}
+          columns={columns}
+          rows={orderList}
+          rowPerPage={5}
+          rowsPerPageOptions={[5, 10, 15]}
+          onRowClick={(params) => navigate(`/orders/${params.row.idOrder}`)}
+        />
+      </Stack>
+    </>
   );
 };
 

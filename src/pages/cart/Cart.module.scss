@@ -1,7 +1,6 @@
 .Container {
   min-height: calc(100vh - 100px);
-  padding: 50px;
-  display: flex;
+  padding: 25px;
   justify-content: center;
 }
 
@@ -9,26 +8,118 @@
   width: 90%;
 
   .Left {
+    flex: 1;
+    height: 50rem;
+
     .ButtonWrapper {
       width: 100%;
-      display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 15px;
       gap: 5px;
+    }
+
+    .DataGridRow,
+    .DataGridCell {
+      min-height: 120px !important;
+      max-height: 200px !important;
+    }
+
+    .CellImage {
+      width: 10rem;
+      height: 10rem;
+      object-fit: cover;
     }
   }
 
   .Right {
     position: sticky;
     top: 100px;
-    max-height: 400px;
+    min-height: 30rem;
+    width: 35rem;
+    align-self: flex-start;
+
+    .CartTotal {
+      width: 100%;
+      background-color: var(--pink_60);
+      color: var(--white);
+      padding: 15px;
+      justify-content: space-between;
+      border-radius: 5px;
+      gap: 10px;
+
+      h1 {
+        font-size: 3rem;
+        font-weight: bold;
+      }
+
+      .TotalWrapper {
+        li {
+          padding: 0;
+          .ListItemText {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            span {
+              font-size: 2rem;
+              font-weight: bold;
+            }
+
+            p {
+              color: var(--white);
+              font-size: 1.8rem;
+              font-weight: 600;
+            }
+          }
+        }
+      }
+
+      button {
+        min-width: 100%;
+      }
+    }
+
+    .PaymentMethod {
+      align-items: center;
+      gap: 15px;
+
+      div,
+      button {
+        min-width: 100%;
+      }
+    }
   }
 }
 
 .TextWrapper {
   height: 100%;
-  display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media screen and (max-width: 46.25em) {
+  .Wrapper {
+    .Right {
+      width: 100%;
+    }
+  }
+}
+
+@media screen and (min-width: 46.25em) and (max-width: 63.9375em) {
+  .Wrapper {
+    .Left {
+      height: 50rem;
+    }
+    .Right {
+      width: 100%;
+    }
+  }
+}
+
+@media screen and (min-width: 100em) {
+  .Wrapper {
+    .Left {
+      height: 75rem;
+    }
+  }
 }

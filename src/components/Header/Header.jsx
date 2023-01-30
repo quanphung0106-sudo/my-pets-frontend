@@ -104,7 +104,11 @@ const Header = () => {
               <Close />
             </IconButton>
           </Stack>
-          <List className={styles.List} component="nav" onClick={handleDrawerClose}>
+          <List
+            className={styles.List}
+            component="nav"
+            onClick={handleDrawerClose}
+          >
             <Link to="/">
               <ListItemButton>
                 <ListItemIcon>
@@ -121,7 +125,7 @@ const Header = () => {
                 <ListItemText primary="Product" />
               </ListItemButton>
             </Link>
-            <Link to="/stranger-items">
+            <Link to="/orders/search">
               <ListItemButton>
                 <ListItemIcon>
                   <InventoryIcon />
@@ -164,7 +168,7 @@ const Header = () => {
           <Link to="/products">
             <li>Pet</li>
           </Link>
-          <Link to="/stranger-items">
+          <Link to="/orders/search">
             <li>Item</li>
           </Link>
           {upLg && (
@@ -195,7 +199,7 @@ const Header = () => {
             render={(attrs) => (
               <div {...attrs}>
                 <ul className={styles.ListItem}>
-                  <Link className={styles.Link} to="/my-items">
+                  <Link className={styles.Link} to="/orders">
                     <li className={styles.AccountItem}>My Order</li>
                   </Link>
                   {isAdmin && (

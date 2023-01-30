@@ -63,8 +63,9 @@ const useFetch = (name, id, user, params) => {
     } catch (err) {
       console.log(err);
       setError(err);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {

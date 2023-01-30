@@ -1,4 +1,3 @@
-import { useState } from "react";
 import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
 import EastIcon from "@mui/icons-material/East";
@@ -6,10 +5,15 @@ import {
   CircularProgress,
   IconButton,
   Popover,
-  Typography,
+  Tooltip,
+  Typography
 } from "@mui/material";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { orderApi } from "~/libs/helpers/axios";
 import storage from "~/libs/helpers/localStorage";
+import { showNotification } from "~/redux/notificationSlice";
+import { notificationMessage } from "~/utils/messages";
 import styles from "./style.module.scss";
 
 const UpdateStatus = ({ data, id, callback }) => {
@@ -17,6 +21,7 @@ const UpdateStatus = ({ data, id, callback }) => {
   const [loading, setLoading] = useState(false);
   const openPopover = Boolean(anchorEl);
   const order = data.filter((order) => order._id === id)[0];
+  const dispatch = useDispatch();
 
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget);
@@ -33,16 +38,34 @@ const UpdateStatus = ({ data, id, callback }) => {
       const res = await orderApi(storage.getAccessToken()).updateStatus(id, {
         status: currentStatus + 1,
       });
-      if (res.data) callback();
+      if (res.data) {
+        dispatch(
+          showNotification({
+            message: notificationMessage.update("Order status"),
+          })
+        );
+        callback();
+        setAnchorEl(null);
+      }
     } catch (err) {
+      dispatch(
+        showNotification({
+          message: notificationMessage.error(),
+          type: "error",
+        })
+      );
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
       <IconButton onClick={handleClick} disabled={order.status === 2}>
-        <EastIcon />
+        <Tooltip title="Update status">
+          <EastIcon />
+        </Tooltip>
       </IconButton>
       <Popover
         open={openPopover}

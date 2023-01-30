@@ -15,9 +15,9 @@ import { ContainedTextField } from "~/components/TextField/TextField";
 import { orderApi } from "~/libs/helpers/axios";
 import { formatDate } from "~/libs/utils";
 import { messages } from "~/utils/messages";
-import styles from "./SearchOrder.module.scss";
+import styles from "./Search.module.scss";
 
-const SearchOrder = () => {
+const Search = () => {
   const [data, setData] = useState({});
   const [error, setError] = useState();
   const [id, setId] = useState("");
@@ -186,7 +186,7 @@ const SearchOrder = () => {
                     {formatDate(data.createdAt)}
                   </TableCell>
                   <TableCell classes={{ root: styles.TableCell }} align="right">
-                    ${data.total}
+                    ${data.totalPrice}
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -198,4 +198,4 @@ const SearchOrder = () => {
   );
 };
 
-export default SearchOrder;
+export default Search;

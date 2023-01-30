@@ -1,19 +1,18 @@
-import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Stack, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
+import { useNavigate, useParams } from "react-router-dom";
 import Lightbox from "yet-another-react-lightbox";
 import Inline from "yet-another-react-lightbox/plugins/inline";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
-import "yet-another-react-lightbox/styles.css";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
+import "yet-another-react-lightbox/styles.css";
+import { BaseButton } from "~/components/Button/Button";
+import Loading from "~/components/Loading/Loading";
 import useFetch from "~/libs/hooks/useFetch";
 import { addProduct } from "~/redux/cartSlice";
-import Loading from "~/components/Loading/Loading";
-import { BaseButton } from "~/components/Button/Button";
 import styles from "./Detail.module.scss";
 
 const Detail = () => {
@@ -63,7 +62,6 @@ const Detail = () => {
   const handleClick = () => {
     dispatch(
       addProduct({
-        idItem: uuidv4(),
         ...data,
         price,
         quantity,
@@ -85,7 +83,7 @@ const Detail = () => {
     },
   ];
 
-  if (loading) return <Loading />;
+  if (loading) return <Loading className={styles.Loading} />;
   return (
     <Stack
       direction={{ sm: "column", lg: "row" }}

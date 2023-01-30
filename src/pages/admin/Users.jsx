@@ -1,132 +1,100 @@
 import EditIcon from "@mui/icons-material/Edit";
-import { Box, IconButton, Paper } from "@mui/material";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
+import { IconButton, Stack } from "@mui/material";
+import BaseDataGrid from "~/components/BaseDataGrid/BaseDataGrid";
 
 import { BaseButton } from "~/components/Button/Button";
-import Loading from "~/components/Loading/Loading";
 import useFetch from "~/libs/hooks/useFetch";
 import { formatDate } from "~/libs/utils";
 import Delete from "./Action/Delete";
 import styles from "./Admin.module.scss";
 
-const Users = ({ handleAlign }) => {
+const Users = () => {
   const { data, reFetch } = useFetch("users");
-
-  const column = [
+  const columns = [
     {
-      name: "ID",
+      field: "id",
+      headerName: "ID",
+      flex: 0.5,
     },
     {
-      name: "Username",
-      align: "center",
+      field: "username",
+      headerName: "Username",
+      minWidth: 100,
+      flex: 1,
     },
     {
-      name: "Email",
-      align: "center",
+      field: "email",
+      headerName: "Email",
+      minWidth: 250,
+      sortable: false,
+      flex: 1,
     },
     {
-      name: "Created At",
-      align: "center",
+      field: "role",
+      headerName: "Role",
+      minWidth: 100,
+      sortable: false,
+      flex: 1,
     },
     {
-      name: "Role",
-      align: "center",
+      field: "createdAt",
+      headerName: "Created At",
+      headerAlign: "right",
+      align: "right",
+      minWidth: 200,
+      flex: 1,
+      renderCell: (params) => formatDate(params.value),
     },
     {
-      name: "Action",
+      field: "action",
+      headerName: "Action",
+      headerAlign: "center",
       align: "center",
+      headerClassName: styles.Action,
+      cellClassName: styles.Action,
+      sortable: false,
+      minWidth: 80,
+      flex: 1,
+      renderCell: (params) => {
+        if (params.row !== undefined) {
+          const idUser = params.row.idUser;
+          return (
+            <Stack direction="row" alignItems="center">
+              <IconButton disabled>
+                <EditIcon />
+              </IconButton>
+              <Delete id={idUser} name="users" callback={reFetch} />
+            </Stack>
+          );
+        }
+      },
     },
   ];
 
-  if (data.length === 0) return <Loading />;
+  const userList = data.users?.map((user, index) => {
+    return {
+      id: ++index,
+      idUser: user._id,
+      username: user.username,
+      email: user.email,
+      role: user.isAdmin === true ? "Admin" : "User",
+      createdAt: user.createdAt,
+    };
+  });
+
   return (
-    <Box>
-      <Box className={styles.Users}>
-        <BaseButton primary size="large" className={styles.Btn}>
-          Add new User
-        </BaseButton>
-        <TableContainer component={Paper} className={styles.Table}>
-          <Table sx={{ minWidth: 650 }}>
-            <TableHead classes={{ root: styles.TableHead }}>
-              <TableRow>
-                {column.map((column, index) => {
-                  return (
-                    <TableCell
-                      classes={{ root: styles.TableCell }}
-                      align={handleAlign(index, column.align)}
-                      key={index}
-                    >
-                      {column.name}
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            </TableHead>
-            <TableBody classes={{ root: styles.TableBody }}>
-              {data?.map((data, index) => {
-                return (
-                  <TableRow
-                    key={data._id}
-                    classes={{ root: styles.TableRow }}
-                    sx={{
-                      "&:last-child td, &:last-child th": {
-                        border: 0,
-                      },
-                    }}
-                  >
-                    <TableCell
-                      classes={{ root: styles.TableCell }}
-                      align="left"
-                    >
-                      {++index}
-                    </TableCell>
-                    <TableCell
-                      classes={{ root: styles.TableCell }}
-                      align="center"
-                    >
-                      {data.username}
-                    </TableCell>
-                    <TableCell
-                      classes={{ root: styles.TableCell }}
-                      align="center"
-                    >
-                      {data.email}
-                    </TableCell>
-                    <TableCell
-                      classes={{ root: styles.TableCell }}
-                      align="center"
-                    >
-                      {formatDate(data.createdAt)}
-                    </TableCell>
-                    <TableCell
-                      classes={{ root: styles.TableCell }}
-                      align="center"
-                    >
-                      {data.isAdmin === true ? "Admin" : "User"}
-                    </TableCell>
-                    <TableCell
-                      onClick={(e) => e.stopPropagation()}
-                      classes={{ root: styles.TableCell }}
-                      align="center"
-                    >
-                      <IconButton>
-                        <EditIcon />
-                      </IconButton>
-                      <Delete id={data._id} name="users" callback={reFetch} />
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
-    </Box>
+    <Stack className={styles.Users}>
+      <BaseButton primary size="large" className={styles.Btn} disabled>
+        Add new User
+      </BaseButton>
+      <BaseDataGrid
+        data={data}
+        columns={columns}
+        rows={userList}
+        rowPerPage={10}
+        rowsPerPageOptions={[10, 25, 50]}
+      />
+    </Stack>
   );
 };
 

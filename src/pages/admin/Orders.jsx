@@ -1,54 +1,108 @@
-import { Box, Paper } from "@mui/material";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import { useNavigate } from "react-router-dom";
+import { Stack, Tooltip, Typography } from "@mui/material";
+import BaseDataGrid from "~/components/BaseDataGrid/BaseDataGrid";
 
-import Loading from "~/components/Loading/Loading";
 import useFetch from "~/libs/hooks/useFetch";
+import { formatDate } from "~/libs/utils";
 import { UpdateStatus } from "./Action";
 import Delete from "./Action/Delete";
 import styles from "./Admin.module.scss";
 
-const Orders = ({ handleAlign }) => {
-  const navigate = useNavigate();
-
-  const { data, loading, reFetch } = useFetch("allOrders");
-
-  const columnOrders = [
+const Orders = () => {
+  const { data, reFetch } = useFetch("allOrders");
+  const columns = [
     {
-      name: "Order Id",
+      field: "id",
+      headerName: "ID",
+      headerClassName: styles.Id,
+      cellClassName: styles.Id,
+      flex: 0.5,
     },
     {
-      name: "Customer",
-      align: "center",
+      field: "idItem",
+      headerName: "Order ID",
+      sortable: false,
+      minWidth: 180,
+      flex: 1,
+      renderCell: (params) => (
+        <Tooltip title={params.value}>
+          <Typography
+            sx={{
+              whiteSpace: " nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+            fontSize="14px"
+          >
+            {params.value}
+          </Typography>
+        </Tooltip>
+      ),
     },
     {
-      name: "Payment",
-      align: "center",
+      field: "customer",
+      headerName: "Customer",
+      minWidth: 180,
+      flex: 1,
     },
     {
-      name: "Status",
-      align: "center",
+      field: "method",
+      headerName: "Method",
+      minWidth: 80,
+      sortable: false,
+      flex: 0.8,
+      renderCell: (params) => (
+        <Typography>{params.value === 0 ? "Cash" : "Paid"}</Typography>
+      ),
     },
     {
-      name: "Total",
+      field: "status",
+      headerName: "Status",
+      minWidth: 100,
+      sortable: false,
+      flex: 0.8,
+      renderCell: (params) => handleConvertStatus(params.value),
+    },
+    {
+      field: "updatedAt",
+      headerName: "Update At",
+      headerAlign: "right",
       align: "right",
+      minWidth: 200,
+      flex: 1,
+      renderCell: (params) => formatDate(params.value),
     },
     {
-      name: "Action",
+      field: "total",
+      headerName: "Total",
+      headerAlign: "right",
+      align: "right",
+      sortable: false,
+      minWidth: 80,
+      flex: 1,
+    },
+    {
+      field: "action",
+      headerName: "Action",
+      headerAlign: "center",
       align: "center",
+      headerClassName: styles.Action,
+      cellClassName: styles.Action,
+      sortable: false,
+      minWidth: 80,
+      flex: 1,
+      renderCell: (params) => {
+        if (params.row !== undefined) {
+          const idItem = params.row.idItem;
+          return (
+            <Stack direction="row" alignItems="center">
+              <UpdateStatus data={data.orders} id={idItem} callback={reFetch} />
+              <Delete id={idItem} name="orders" callback={reFetch} />
+            </Stack>
+          );
+        }
+      },
     },
   ];
-
-  const navigateToDetailOrder = (id) => {
-    navigate(`/orders/${id}`);
-  };
-
-  
 
   const handleConvertStatus = (status) => {
     if (status === 0) return "Preparing";
@@ -56,67 +110,28 @@ const Orders = ({ handleAlign }) => {
     if (status === 2) return "Delivered";
   };
 
-  if (loading) return <Loading />;
+  const orderList = data.orders?.map((order, index) => {
+    return {
+      id: ++index,
+      idItem: order._id,
+      customer: order.customer,
+      method: order.method,
+      status: order.status,
+      updatedAt: order.updatedAt,
+      total: `$${order.totalPrice}`,
+    };
+  });
+
   return (
-    <Box className={styles.Orders}>
-      <TableContainer component={Paper} className={styles.Table}>
-        <Table sx={{ minWidth: 650 }}>
-          <TableHead classes={{ root: styles.TableHead }}>
-            <TableRow>
-              {columnOrders.map((column, index) => {
-                return (
-                  <TableCell
-                    classes={{ root: styles.TableCell }}
-                    align={handleAlign(index, column.align)}
-                    key={index}
-                  >
-                    {column.name}
-                  </TableCell>
-                );
-              })}
-            </TableRow>
-          </TableHead>
-          <TableBody classes={{ root: styles.TableBody }}>
-            {data.map((order) => (
-              <TableRow
-                onClick={() => navigateToDetailOrder(order._id)}
-                key={order._id}
-                classes={{ root: styles.TableRow }}
-                sx={{
-                  "&:last-child td, &:last-child th": {
-                    border: 0,
-                  },
-                }}
-              >
-                <TableCell classes={{ root: styles.TableCell }} align="left">
-                  {order._id.slice(0, 9)}
-                </TableCell>
-                <TableCell classes={{ root: styles.TableCell }} align="center">
-                  {order.customer}
-                </TableCell>
-                <TableCell classes={{ root: styles.TableCell }} align="center">
-                  {order.method === 0 ? "Cash" : "Paid"}
-                </TableCell>
-                <TableCell classes={{ root: styles.TableCell }} align="center">
-                  {handleConvertStatus(order.status)}
-                </TableCell>
-                <TableCell classes={{ root: styles.TableCell }} align="right">
-                  ${order.total}
-                </TableCell>
-                <TableCell
-                  onClick={(e) => e.stopPropagation()}
-                  classes={{ root: styles.TableCell }}
-                  align="center"
-                >
-                  <UpdateStatus data={data} id={order._id} callback={reFetch} />
-                  <Delete id={order._id} name="orders" callback={reFetch} />
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
+    <Stack className={styles.Orders}>
+      <BaseDataGrid
+        data={data}
+        columns={columns}
+        rows={orderList}
+        rowPerPage={15}
+        rowsPerPageOptions={[15, 25, 50]}
+      />
+    </Stack>
   );
 };
 

@@ -1,0 +1,10 @@
+$background_color: #f0919623;
+$background_color_hover: #f0919675;
+.Container {
+  min-height: calc(100vh - 100px);
+  padding: 25px;
+}
+
+.Loading {
+  height: calc(100vh - 100px);
+}

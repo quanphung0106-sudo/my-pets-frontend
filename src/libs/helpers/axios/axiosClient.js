@@ -16,6 +16,7 @@ export const axiosClient = (token) => {
       "Access-Control-Allow-Origin": "*",
       Authorization: "Bearer " + token,
     },
+    timeout: 60000,
   });
 
   // axiosJWT.interceptors.response.use(

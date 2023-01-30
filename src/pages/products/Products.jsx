@@ -33,6 +33,21 @@ const initialState = {
   max: "",
 };
 
+const PRICE_STYLES = {
+  "&": {
+    color: "var(--white)",
+    "& p": {
+      fontWeight: "bold",
+      fontSize: "1.6rem",
+    },
+    "& span": {
+      fontSize: "1.4rem",
+      fontWeight: "normal",
+      ml: "5px",
+    },
+  },
+};
+
 const Products = () => {
   const theme = useTheme();
   const downLg = useMediaQuery(theme.breakpoints.down("lg"));
@@ -45,20 +60,26 @@ const Products = () => {
     params
   );
   const { scrollYProgress } = useScroll();
-  const { register, handleSubmit, watch, control, reset, resetField } = useForm(
-    {
-      defaultValues: initialState,
-      mode: "all",
-      resolver: yupResolver(
-        Yup.object({
-          title: Yup.string(),
-          sort: Yup.string(),
-          min: Yup.string(),
-          max: Yup.string(),
-        })
-      ),
-    }
-  );
+  const {
+    register,
+    handleSubmit,
+    watch,
+    control,
+    reset,
+    resetField,
+    setValue,
+  } = useForm({
+    defaultValues: initialState,
+    mode: "all",
+    resolver: yupResolver(
+      Yup.object({
+        title: Yup.string(),
+        sort: Yup.string(),
+        min: Yup.string(),
+        max: Yup.string(),
+      })
+    ),
+  });
 
   const watchValue = watch();
 
@@ -92,6 +113,58 @@ const Products = () => {
     setParams(values);
   };
 
+  const handleShowPrice = (data) => {
+    if (data.sellItem !== 0) {
+      if (data.typeOfOptions.length > 1) {
+        return (
+          <Stack direction="row" alignItems="center" sx={PRICE_STYLES}>
+            <Typography>
+              $
+              {data.typeOfOptions[0].price -
+                (data.typeOfOptions[0].price * data.sellItem) / 100}
+              -
+            </Typography>
+            <Typography>
+              {data.typeOfOptions[data.typeOfOptions.length - 1].price -
+                (data.typeOfOptions[data.typeOfOptions.length - 1].price *
+                  data.sellItem) /
+                  100}
+            </Typography>
+            <Stack component="span">(-{data.sellItem}%)</Stack>
+          </Stack>
+        );
+      } else {
+        return (
+          <Stack direction="row" alignItems="center" sx={PRICE_STYLES}>
+            <Typography>
+              $
+              {data.typeOfOptions[0].price -
+                (data.typeOfOptions[0].price * data.sellItem) / 100}
+            </Typography>
+            <Stack component="span">(-{data.sellItem}%)</Stack>
+          </Stack>
+        );
+      }
+    } else if (data.sellItem === 0) {
+      if (data.typeOfOptions.length > 1) {
+        return (
+          <Stack direction="row" alignItems="center" sx={PRICE_STYLES}>
+            <Typography>
+              ${data.typeOfOptions[0].price} -
+              {data.typeOfOptions[data.typeOfOptions.length - 1].price}
+            </Typography>
+          </Stack>
+        );
+      } else {
+        return (
+          <Stack direction="row" alignItems="center" sx={PRICE_STYLES}>
+            <Typography>${data.typeOfOptions[0].price}</Typography>
+          </Stack>
+        );
+      }
+    }
+  };
+
   return (
     <>
       <motion.div
@@ -119,9 +192,16 @@ const Products = () => {
                   {...field}
                   disabled={disabled}
                   className={styles.Autocomplete}
+                  onInputChange={(event, newInputValue) => {
+                    setValue("title", newInputValue);
+                  }}
                   fullWidth
                   freeSolo
-                  options={data.map((option) => option.title)}
+                  options={
+                    data?.items !== undefined
+                      ? data.items?.map((option) => option.title)
+                      : []
+                  }
                   {...register("title")}
                   renderInput={(params) => {
                     return (
@@ -297,7 +377,7 @@ const Products = () => {
             </Stack>
           )}
           {!loading
-            ? data?.map((data) => (
+            ? data.items?.map((data) => (
                 <Stack className={styles.Item} key={data._id}>
                   <Stack className={styles.Top}>
                     <Link to={`/products/${data._id}`}>
@@ -323,36 +403,7 @@ const Products = () => {
                     alignItems="center"
                   >
                     <Typography variant="h2">{data.title}</Typography>
-                    <Typography
-                      variant="body1"
-                      classes={{ body1: styles.Body1 }}
-                    >
-                      {data.sellItem !== 0 ? (
-                        <>
-                          $
-                          {data.typeOfOptions[0].price -
-                            (data.typeOfOptions[data.typeOfOptions.length - 1]
-                              .price *
-                              data.sellItem) /
-                              100}
-                          -
-                          {data.typeOfOptions[1].price -
-                            (data.typeOfOptions[data.typeOfOptions.length - 1]
-                              .price *
-                              data.sellItem) /
-                              100}
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            classes={{ body2: styles.Body2 }}
-                          >
-                            (-{data.sellItem}%)
-                          </Typography>
-                        </>
-                      ) : (
-                        `$${data.typeOfOptions[0].price}`
-                      )}
-                    </Typography>
+                    <Stack>{handleShowPrice(data)}</Stack>
                     <BaseButton to={`/products/${data._id}`} ghost>
                       View Options
                     </BaseButton>

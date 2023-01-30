@@ -96,3 +96,11 @@
     height: 80rem;
   }
 }
+
+@media screen and (max-width: 46.25em) {
+  .ContentWrapper {
+    .Right {
+      width: 100%;
+    }
+  }
+}

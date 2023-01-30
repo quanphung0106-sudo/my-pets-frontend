@@ -22,8 +22,10 @@ import { itemApi } from "~/libs/helpers/axios";
 import styles from "./CreateAndUpdate.module.scss";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { messages } from "~/utils/messages";
+import { messages, notificationMessage } from "~/utils/messages";
 import storage from "~/libs/helpers/localStorage";
+import { showNotification } from "~/redux/notificationSlice";
+import { useDispatch } from "react-redux";
 
 const initialState = {
   title: "",
@@ -35,26 +37,32 @@ const initialState = {
 const CreateAndUpdate = ({ open, setOpen, callback, id }) => {
   const [loading, setLoading] = useState(false);
   const title = id ? "Update Item" : "Create New Item";
+  const dispatch = useDispatch();
 
-  const { register, formState, handleSubmit, reset, clearErrors, control } =
-    useForm({
-      defaultValues: initialState,
-      mode: "all",
-      resolver: yupResolver(
-        Yup.object({
-          title: Yup.string()
-            .max(30, messages.minLength("Title", 30))
-            .required(messages.requiredField("Title")),
-          desc: Yup.string()
-            .max(270, messages.minLength("Title", 270))
-            .required(messages.requiredField("Description")),
-          img: Yup.mixed().required(messages.requiredField("Image")),
-          typeOfOptions: Yup.array()
-            .min(1, messages.min("Options", 1))
-            .ensure(),
-        })
-      ),
-    });
+  const {
+    register,
+    formState,
+    handleSubmit,
+    reset,
+    clearErrors,
+    control,
+    setValue,
+  } = useForm({
+    defaultValues: initialState,
+    mode: "all",
+    resolver: yupResolver(
+      Yup.object({
+        title: Yup.string()
+          .max(30, messages.minLength("Title", 30))
+          .required(messages.requiredField("Title")),
+        desc: Yup.string()
+          .max(400, messages.minLength("Title", 400))
+          .required(messages.requiredField("Description")),
+        img: Yup.mixed().required(messages.requiredField("Image")),
+        typeOfOptions: Yup.array().min(1, messages.min("Options", 1)).ensure(),
+      })
+    ),
+  });
 
   const { fields, append, remove } = useFieldArray({
     name: "typeOfOptions",
@@ -76,17 +84,21 @@ const CreateAndUpdate = ({ open, setOpen, callback, id }) => {
   useEffect(() => {
     const getItemById = async () => {
       try {
-        if (open && id === null) {
-          reset(initialState);
-        } else if (open && id !== null) {
-          const res = await itemApi().get(id);
-          if (res.data) {
-            reset({
-              title: res.data.title,
-              desc: res.data.desc,
-              img: res.data.img,
-              typeOfOptions: res.data.typeOfOptions,
-            });
+        if (open) {
+          if (id === null) {
+            reset(initialState);
+          } else if (id !== null) {
+            const res = await itemApi().get(id);
+            if (res.data) {
+              reset({
+                title: res.data.title,
+                desc: res.data.desc,
+                img: res.data.img,
+                typeOfOptions: res.data.typeOfOptions,
+              });
+              setValue("typeOfOptions.title", "");
+              setValue("typeOfOptions.price", "");
+            }
           }
         }
       } catch (err) {
@@ -148,7 +160,15 @@ const CreateAndUpdate = ({ open, setOpen, callback, id }) => {
             img: uploadRes.data.url,
             cheapestPrice: cheapestPrice.price,
           });
-      if ([200, 201].includes(res.status) && res.data) {
+      if (res.data) {
+        if (res.status === 200)
+          dispatch(
+            showNotification({ message: notificationMessage.update("Item") })
+          );
+        if (res.status === 201)
+          dispatch(
+            showNotification({ message: notificationMessage.create("Item") })
+          );
         setLoading(false);
         reset(initialState);
         callback();
@@ -156,6 +176,12 @@ const CreateAndUpdate = ({ open, setOpen, callback, id }) => {
       setOpen(false);
     } catch (err) {
       console.log(err);
+      dispatch(
+        showNotification({
+          message: notificationMessage.error(),
+          type: "error",
+        })
+      );
       setLoading(false);
     }
   };

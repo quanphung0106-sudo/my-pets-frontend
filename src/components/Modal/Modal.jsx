@@ -16,14 +16,15 @@ import * as Yup from "yup";
 
 import { useNavigate } from "react-router-dom";
 import { reset } from "~/redux/cartSlice";
-import { messages } from "~/utils/messages";
+import { messages, notificationMessage } from "~/utils/messages";
 import { BaseButton } from "../Button/Button";
 import { ContainedTextField } from "../TextField/TextField";
 import styles from "./Modal.module.scss";
 import { orderApi } from "~/libs/helpers/axios";
 import storage from "~/libs/helpers/localStorage";
+import { showNotification } from "~/redux/notificationSlice";
 
-const Modal = ({ total, setOpen, open }) => {
+const Modal = ({ totalPrice, setOpen, open }) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const cartProducts = useSelector((state) => state.cart.products);
@@ -72,7 +73,7 @@ const Modal = ({ total, setOpen, open }) => {
     const data = {
       userId: user ? user?._id : null,
       products,
-      total,
+      totalPrice,
       customer,
       phoneNumber,
       address,
@@ -85,10 +86,21 @@ const Modal = ({ total, setOpen, open }) => {
       setError(false);
       if (res.status === 201) {
         dispatch(reset());
+        dispatch(
+          showNotification({
+            message: notificationMessage.create("Order"),
+          })
+        );
         navigate(`/orders/${res.data._id}`);
       }
     } catch (err) {
       setError(err?.response?.data);
+      dispatch(
+        showNotification({
+          message: notificationMessage.error(),
+          type: "error",
+        })
+      );
     } finally {
       setLoading(false);
     }
@@ -109,7 +121,7 @@ const Modal = ({ total, setOpen, open }) => {
         >
           <CloseIcon />
         </IconButton>
-        You will pay <Box component="b">${total}</Box> after delivery.
+        You will pay <Box component="b">${totalPrice}</Box> after delivery.
       </DialogTitle>
       <DialogContent>
         {error && <Alert severity="error">{error}</Alert>}

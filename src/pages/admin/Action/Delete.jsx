@@ -11,11 +11,15 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { itemApi, orderApi, userApi } from "~/libs/helpers/axios";
 import styles from "./style.module.scss";
 import storage from "~/libs/helpers/localStorage";
+import { useDispatch } from "react-redux";
+import { showNotification } from "~/redux/notificationSlice";
+import { notificationMessage } from "~/utils/messages";
 
 const Delete = ({ id, name, callback }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [loading, setLoading] = useState(false);
   const openPopover = Boolean(anchorEl);
+  const dispatch = useDispatch();
 
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget);
@@ -31,21 +35,46 @@ const Delete = ({ id, name, callback }) => {
       switch (name) {
         case "products":
           const productRes = await itemApi(storage.getAccessToken()).delete(id);
-          if (productRes.status === 200) callback();
+          if (productRes.status === 200) {
+            setAnchorEl(null);
+            dispatch(
+              showNotification({ message: notificationMessage.delete("Item") })
+            );
+            callback();
+          }
           break;
         case "orders":
           const orderRes = await orderApi(storage.getAccessToken()).delete(id);
-          if (orderRes.status === 200) callback();
+          if (orderRes.status === 200) {
+            console.log(orderRes);
+            setAnchorEl(null);
+            dispatch(
+              showNotification({ message: notificationMessage.delete("Order") })
+            );
+            callback();
+          }
           break;
         case "users":
           const userRes = await userApi(storage.getAccessToken()).delete(id);
-          if (userRes.status === 200) callback();
+          if (userRes.status === 200) {
+            setAnchorEl(null);
+            dispatch(
+              showNotification({ message: notificationMessage.delete("User") })
+            );
+            callback();
+          }
           break;
 
         default:
           break;
       }
     } catch (err) {
+      dispatch(
+        showNotification({
+          message: notificationMessage.error(),
+          type: "error",
+        })
+      );
       console.log(err);
     }
   };

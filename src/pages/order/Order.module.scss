@@ -1,22 +1,16 @@
 .Container {
   min-height: calc(100vh - 100px);
-  padding: 50px;
-  display: flex;
-  justify-content: center;
+  padding: 25px;
 
   .Wrapper {
     width: 90%;
 
     .Left {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      flex: 1;
+      height: 80rem;
 
       .ButtonWrapper {
         width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
         margin-bottom: 15px;
         gap: 5px;
 
@@ -29,7 +23,7 @@
       .DeliveryState {
         width: 80%;
         height: 100px;
-        margin: 25px 0;
+        margin: 15px 0;
 
         img {
           width: 4rem;
@@ -71,31 +65,57 @@
           height: 2rem;
         }
       }
+
+      .DataGridRow,
+      .DataGridCell {
+        min-height: 120px !important;
+        max-height: 200px !important;
+      }
+
+      .CellImage {
+        width: 10rem;
+        height: 10rem;
+        object-fit: cover;
+      }
     }
 
     .Right {
+      width: 35rem;
       .TotalWrapper {
         position: sticky;
         top: 100px;
         background-color: var(--pink_60);
         color: var(--white);
-        padding: 25px;
+        padding: 15px;
         border-radius: 5px;
 
         h1 {
-          font-size: 3.6rem;
+          font-size: 3rem;
           font-weight: bold;
-          margin-bottom: 20px;
         }
 
-        p {
-          font-size: 2.2rem;
-          font-weight: 700;
-          margin-bottom: 20px;
+        .List {
+          li {
+            padding: 0;
+            .ListItemText {
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+              span {
+                font-size: 2rem;
+                font-weight: bold;
+              }
+
+              p {
+                color: var(--white);
+                font-size: 1.8rem;
+                font-weight: 600;
+              }
+            }
+          }
         }
 
         button {
-          margin-top: 20px;
           min-width: 100%;
         }
       }
@@ -103,11 +123,47 @@
   }
 }
 
-//tablet
 @media screen and (min-width: 46.25em) and (max-width: 63.9375em) {
   .Container {
     .Wrapper {
-      gap: 20px;
+      width: 100%;
+      .Left {
+        height: 50rem;
+      }
+      .Right {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 46.25em) {
+  .Container {
+    .Wrapper {
+      height: 120rem;
+      width: 100%;
+
+      .Left {
+        .DeliveryState {
+          width: 100%;
+
+          img {
+            width: 2rem;
+            height: 2rem;
+          }
+        }
+      }
+      .Right {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 100em) {
+  .Wrapper {
+    .Left {
+      height: 75rem;
     }
   }
 }

@@ -169,6 +169,10 @@
   }
 }
 
+.Loading {
+  height: calc(100vh - 100px);
+}
+
 @media screen and (max-width: 74.9375em) {
   .LightBox {
     & :global(.yarl__container) {

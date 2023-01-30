@@ -17,11 +17,6 @@ const Admin = () => {
   const isAdmin = user !== null && user.isAdmin;
   const navigate = useNavigate();
 
-  const handleAlign = (index, align) => {
-    if (index === 0) return "left";
-    return align;
-  };
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -55,9 +50,9 @@ const Admin = () => {
             classes={{ selected: styles.Selected }}
           />
         </BottomNavigation>
-        {value === 0 && <Products handleAlign={handleAlign} />}
-        {value === 1 && <Orders handleAlign={handleAlign} />}
-        {value === 2 && <Users handleAlign={handleAlign} />}
+        {value === 0 && <Products />}
+        {value === 1 && <Orders />}
+        {value === 2 && <Users />}
       </Box>
       <Footer />
     </>

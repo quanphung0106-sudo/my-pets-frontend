@@ -60,6 +60,7 @@ export const routes = createBrowserRouter([
       {
         path: "/products",
         element: <Products />,
+        errorElement: <Error />,
       },
       {
         path: "/products/:id",
@@ -108,7 +109,6 @@ export const routes = createBrowserRouter([
         element: (
           <>
             <Admin />
-
             <ScrollToTop />
           </>
         ),

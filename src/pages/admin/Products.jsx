@@ -139,7 +139,7 @@ const Products = () => {
     setOpen(true);
   };
 
-  const productList = data.items?.map((item, index) => {
+  const productList = data?.items?.map((item, index) => {
     return {
       id: ++index,
       idItem: item._id,

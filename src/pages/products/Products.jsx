@@ -376,7 +376,7 @@ const Products = () => {
               </Typography>
             </Stack>
           )}
-          {!loading
+          {!loading && Array.isArray(data.items)
             ? data.items?.map((data) => (
                 <Stack className={styles.Item} key={data._id}>
                   <Stack className={styles.Top}>

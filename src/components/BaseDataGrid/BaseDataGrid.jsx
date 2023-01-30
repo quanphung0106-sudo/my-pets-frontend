@@ -23,7 +23,7 @@ const BaseDataGrid = (props) => {
       disableColumnFilter
       disableVirtualization
       disableColumnSelector
-      columns={columns}
+      columns={columns ? columns : []}
       rows={rows !== undefined ? rows : []}
       loading={rows === undefined}
       disableSelectionOnClick
@@ -32,7 +32,7 @@ const BaseDataGrid = (props) => {
       onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
       rowsPerPageOptions={rowsPerPageOptions}
       experimentalFeatures={{ newEditingApi: true }}
-      rowCount={data?.totalData}
+      rowCount={data ? data?.totalData : 0}
       checkboxSelection
     />
   );

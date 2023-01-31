@@ -156,12 +156,12 @@ const Order = () => {
       <Stack
         className={styles.Wrapper}
         direction={{ xs: "column", sm: "column", lg: "row" }}
-        gap="15px"
+        gap={{ xs: "20px", sm: "25px", lg: "25px" }}
       >
         <Stack
           className={styles.Left}
-          direction={{ xs: "column", sm: "column", lg: "column" }}
           alignItems="center"
+          gap={{ xs: "20px", sm: "25px", lg: "25px" }}
         >
           <Stack className={styles.ButtonWrapper} alignItems="flex-start">
             <BaseButton

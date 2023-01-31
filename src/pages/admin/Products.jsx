@@ -109,6 +109,11 @@ const Products = () => {
       sortable: false,
       minWidth: 100,
       flex: 1,
+      renderCell: (params) => (
+        <Typography fontSize="14px" fontWeight="bold">
+          {params.value}
+        </Typography>
+      ),
     },
     {
       field: "action",

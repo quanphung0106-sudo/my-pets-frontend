@@ -1,13 +1,20 @@
-import { useEffect, useState } from "react";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { Stack, Typography } from "@mui/material";
+import { Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import SwipeableViews from "react-swipeable-views";
+import { autoPlay } from "react-swipeable-views-utils";
 import Lightbox from "yet-another-react-lightbox";
+import Captions from "yet-another-react-lightbox/plugins/captions";
+import "yet-another-react-lightbox/plugins/captions.css";
+import Fullscreen from "yet-another-react-lightbox/plugins/fullscreen";
 import Inline from "yet-another-react-lightbox/plugins/inline";
+import Slideshow from "yet-another-react-lightbox/plugins/slideshow";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
 import { BaseButton } from "~/components/Button/Button";
 import Loading from "~/components/Loading/Loading";
@@ -16,15 +23,32 @@ import { addProduct } from "~/redux/cartSlice";
 import styles from "./Detail.module.scss";
 
 const Detail = () => {
+  const theme = useTheme();
   const [quantity, setQuantity] = useState(1);
   const [check, setCheck] = useState({});
   const [price, setPrice] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [activeStep, setActiveStep] = useState(0);
   const [blockAdd, setBlockAdd] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const params = useParams();
   const { data, loading } = useFetch("items", params.id);
-  const [open, setOpen] = useState(false);
+  const mobileMatches = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
+
+  const source = [
+    {
+      src: data?.img,
+    },
+    {
+      src: "https://img.freepik.com/free-photo/sleeping-beagle-dog-puppy-blue-background_1150-18196.jpg?w=1380&t=st=1674202953~exp=1674203553~hmac=31beac34ed4989db62b9811adfe9a4a6b204dafe21da6bc4363d909313a7647d",
+    },
+    {
+      src: "https://img.freepik.com/free-photo/close-up-veterinarian-taking-care-dog_23-2149100179.jpg?t=st=1674202953~exp=1674203553~hmac=be95a56d3cac30b20dbae7863bc70889832f94b45f89550348b0a56845533d18",
+    },
+  ];
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -71,32 +95,20 @@ const Detail = () => {
     );
   };
 
-  const source = [
-    {
-      src: data?.img,
-    },
-    {
-      src: "https://img.freepik.com/free-photo/sleeping-beagle-dog-puppy-blue-background_1150-18196.jpg?w=1380&t=st=1674202953~exp=1674203553~hmac=31beac34ed4989db62b9811adfe9a4a6b204dafe21da6bc4363d909313a7647d",
-    },
-    {
-      src: "https://img.freepik.com/free-photo/close-up-veterinarian-taking-care-dog_23-2149100179.jpg?t=st=1674202953~exp=1674203553~hmac=be95a56d3cac30b20dbae7863bc70889832f94b45f89550348b0a56845533d18",
-    },
-  ];
+  const handleStepChange = (step) => {
+    setActiveStep(step);
+  };
 
   if (loading) return <Loading className={styles.Loading} />;
   return (
     <Stack
-      direction={{ sm: "column", lg: "row" }}
+      direction="column"
+      gap={{ xs: "20px", sm: "25px", lg: "25px" }}
       alignItems="flex-start"
-      justifyContent="center"
+      justifyContent="flex-start"
       className={styles.Container}
     >
-      <Stack
-        justifyContent={{ sm: "flex-end", lg: "flex-start" }}
-        gap="20px"
-        flex="1"
-        className={styles.Left}
-      >
+      <Stack justifyContent={{ sm: "flex-end", lg: "flex-start" }}>
         <BaseButton
           onClick={() => navigate(-1)}
           primary
@@ -104,35 +116,78 @@ const Detail = () => {
         >
           Go back
         </BaseButton>
-        <Lightbox
-          open={open}
-          plugins={[Thumbnails, Inline]}
-          className={styles.LightBox}
-          thumbnails={{
-            position: "bottom",
-            width: 60,
-            height: 60,
-            border: 1,
-            borderRadius: 4,
-            padding: 0,
-            gap: 8,
-            imageFit: "cover",
-            vignette: false,
-          }}
-          close={() => setOpen(false)}
-          carousel={{ imageFit: "cover" }}
-          animation={{ fade: 300, swipe: 300 }}
-          slides={source}
-        />
       </Stack>
       <Stack
-        direction="row"
-        alignItems="center"
-        flex="1"
-        className={styles.Right}
-        sx={{ p: { sm: 0, lg: "5rem" }, pt: { sm: "20px", lg: "6.2rem" } }}
+        direction={{ xs: "column", sm: "column", lg: "row" }}
+        gap={{ xs: "20px", sm: "25px", lg: "25px" }}
+        className={styles.ContentWrapper}
       >
-        <Stack gap={{ sm: "20px", lg: "25px" }} className={styles.Texts}>
+        <Stack className={styles.Left}>
+          {mobileMatches ? (
+            <Stack sx={{ maxWidth: 400, flexGrow: 1 }}>
+              <AutoPlaySwipeableViews
+                axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+                index={activeStep}
+                onChangeIndex={!open && handleStepChange}
+                enableMouseEvents
+              >
+                {source.map((step, index) => (
+                  <Stack key={index}>
+                    {Math.abs(activeStep - index) <= 2 ? (
+                      <Stack
+                        onClick={() => setOpen(true)}
+                        component="img"
+                        sx={{
+                          height: 255,
+                          display: "block",
+                          maxWidth: 400,
+                          overflow: "hidden",
+                          width: "100%",
+                          objectFit: "cover",
+                        }}
+                        src={step.src}
+                        alt="productImages"
+                      />
+                    ) : null}
+                  </Stack>
+                ))}
+              </AutoPlaySwipeableViews>
+              <Lightbox
+                open={open}
+                close={() => setOpen(false)}
+                slides={source}
+                plugins={[Captions, Fullscreen, Slideshow, Thumbnails, Zoom]}
+              />
+            </Stack>
+          ) : (
+            <Lightbox
+              open={open}
+              plugins={[Thumbnails, Inline]}
+              className={styles.LightBox}
+              thumbnails={{
+                position: "bottom",
+                width: 60,
+                height: 60,
+                border: 1,
+                borderRadius: 4,
+                padding: 0,
+                gap: 8,
+                imageFit: "cover",
+                vignette: false,
+              }}
+              close={() => setOpen(false)}
+              carousel={{ imageFit: "cover" }}
+              animation={{ fade: 200, swipe: 200 }}
+              slides={source}
+            />
+          )}
+        </Stack>
+        <Stack
+          direction="column"
+          alignItems="flex-start"
+          gap={{ xs: "20px", sm: "25px", lg: "25px" }}
+          className={styles.Right}
+        >
           <Typography variant="h1">{data.title}</Typography>
           <Stack className={styles.Prices}>
             {data.sellItem !== 0 ? (
@@ -141,7 +196,9 @@ const Detail = () => {
                   -{data.sellItem}%
                 </Typography>
                 <Stack className={styles.Price} direction="row">
-                  <Typography>${price}</Typography>
+                  <Typography>
+                    ${price - (price * data.sellItem) / 100}
+                  </Typography>
                   <del>${price}</del>
                 </Stack>
               </Stack>

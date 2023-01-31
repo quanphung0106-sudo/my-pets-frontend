@@ -1,13 +1,13 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
-  Alert,
-  Box,
-  CircularProgress,
+  Alert, CircularProgress,
   IconButton,
+  Stack,
   Typography,
+  useMediaQuery,
+  useTheme
 } from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2";
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -29,6 +29,8 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
+  const theme = useTheme();
+  const upSm = useMediaQuery(theme.breakpoints.up("sm"));
   axios.defaults.withCredentials = true;
 
   const { register, formState, handleSubmit } = useForm({
@@ -73,37 +75,42 @@ export default function Login() {
   };
 
   return (
-    <Box padding={{ sm: 4 }} className={styles.Login}>
-      <Grid container className={styles.Container} lg={12}>
-        <Grid container className={styles.ImgContainer} sm={6} lg={6}>
-          <Grid className={styles.Texts}>
-            <Typography variant="h1">Welcome Back.</Typography>
-            <Typography variant="body1">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil
-              blanditiis nostrum quod, perspiciatis voluptatem nobis ducimus
-              modi officiis fuga consequuntur voluptas esse, debitis perferendis
-              necessitatibus.
-            </Typography>
-            <Grid xs={12}>
-              <Typography variant="body2">
-                Don't you have an account?
+    <Stack className={styles.Login} justifyContent="center" alignItems="center">
+      <Stack className={styles.Container} direction="row">
+        {upSm && (
+          <Stack
+            className={styles.ImgContainer}
+            justifyContent="center"
+            flex="1"
+          >
+            <Stack className={styles.Texts} gap="50px">
+              <Typography variant="h1">Welcome Back.</Typography>
+              <Typography variant="body1">
+                A pet, or companion animal, is an animal kept primarily for a
+                person's company or entertainment rather than as a working
+                animal, livestock, or a laboratory animal.
               </Typography>
-              <BaseButton to="/signup" ghost>
-                Register
-              </BaseButton>
-            </Grid>
-          </Grid>
-          <img src={LoginImage} alt="login" />
-        </Grid>
-        <Grid className={styles.Form} sm={6} lg={6}>
-          <Grid className={styles.Texts}>
-            <Typography variant="h2">Login</Typography>
+              <Stack>
+                <Typography variant="body2">
+                  Don't you have an account?
+                </Typography>
+                <BaseButton to="/signup" ghost>
+                  Register
+                </BaseButton>
+              </Stack>
+            </Stack>
+            <img src={LoginImage} alt="login" />
+          </Stack>
+        )}
+        <Stack className={styles.Form} flex="1" justifyContent="center">
+          <Stack className={styles.Texts}>
+            <Typography variant="h1">Login</Typography>
             {error && (
               <Alert severity="error" sx={{ mb: 2 }}>
                 {error}
               </Alert>
             )}
-            <Box
+            <Stack
               component="form"
               onSubmit={handleSubmit(handleFormSubmit)}
               data-testid="login-form"
@@ -143,6 +150,7 @@ export default function Login() {
                 }}
               />
               <BaseButton
+                className={styles.Btn}
                 primary
                 type="submit"
                 disabled={loading}
@@ -152,10 +160,20 @@ export default function Login() {
               >
                 Sign in
               </BaseButton>
-            </Box>
-          </Grid>
-        </Grid>
-      </Grid>
-    </Box>
+              {!upSm && (
+                <Stack gap="10px" marginTop="20px">
+                  <Typography variant="body2">
+                    Don't you have an account?
+                  </Typography>
+                  <BaseButton className={styles.Btn} to="/signup" ghost>
+                    Register
+                  </BaseButton>
+                </Stack>
+              )}
+            </Stack>
+          </Stack>
+        </Stack>
+      </Stack>
+    </Stack>
   );
 }

@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Clear from "@mui/icons-material/Clear";
 import {
@@ -6,17 +5,16 @@ import {
   CircularProgress,
   FormControl,
   FormControlLabel,
-  IconButton,
-  Paper,
-  Radio,
+  IconButton, Radio,
   RadioGroup,
   Skeleton,
   Stack,
   Typography,
   useMediaQuery,
-  useTheme,
+  useTheme
 } from "@mui/material";
 import { motion, useScroll } from "framer-motion";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link } from "react-router-dom";
@@ -353,6 +351,7 @@ const Products = () => {
         </Stack>
 
         <Stack
+          gap={{ xs: "20px", sm: "25px", lg: "15px", xl: "20px" }}
           className={styles.Items}
           direction="row"
           flexWrap="wrap"
@@ -411,10 +410,14 @@ const Products = () => {
                 </Stack>
               ))
             : Array.apply(null, { length: 8 }).map((skeleton, index) => (
-                <Paper key={index} className={styles.Skeleton}>
+                <Stack
+                  key={index}
+                  className={styles.Skeleton}
+                  gap={{ xs: "20px", sm: "25px", lg: "15px", xl: "20px" }}
+                >
                   <Skeleton
                     sx={{
-                      width: "24rem",
+                      width: "100%",
                       height: "15rem",
                       borderRadius: "5px",
                     }}
@@ -436,7 +439,7 @@ const Products = () => {
                     animation="wave"
                     sx={{ width: "14rem", height: "4.2rem" }}
                   />
-                </Paper>
+                </Stack>
               ))}
         </Stack>
       </Stack>

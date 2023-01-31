@@ -4,7 +4,7 @@ $background_color_hover: #f0919675;
 .Container {
   width: 100%;
   min-height: calc(100vh - 100px);
-  padding: 20px;
+  padding: 25px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -41,8 +41,7 @@ $background_color_hover: #f0919675;
     .Btn {
       margin-bottom: 10px;
     }
-    width: 100%;
-    height: 55rem;
+    height: 50rem;
   }
 
   .Products {
@@ -76,6 +75,8 @@ $background_color_hover: #f0919675;
 
 @media screen and (max-width: 46.25em) {
   .Container {
+    min-height: calc(100vh - 85px);
+    padding: 20px;
     .Products,
     .Orders,
     .Users {
@@ -86,10 +87,10 @@ $background_color_hover: #f0919675;
 
 @media screen and (min-width: 46.25em) and (max-width: 63.9375em) {
   .Container {
-    .Products {
-      .DataGrid {
-        height: 72rem;
-      }
+    .Products,
+    .Orders,
+    .Users {
+      height: calc(100vh - 22rem);
     }
   }
 }

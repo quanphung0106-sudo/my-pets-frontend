@@ -41,4 +41,15 @@
 
 //mobile
 @media screen and (max-width: 46.25em) {
+  .Container {
+    height: calc(100vh - 85px);
+    .Right {
+      padding: 20px;
+      .Texts {
+        h1 {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
 }

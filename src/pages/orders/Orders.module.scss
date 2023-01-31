@@ -8,3 +8,10 @@ $background_color_hover: #f0919675;
 .Loading {
   height: calc(100vh - 100px);
 }
+
+@media screen and (max-width: 46.25em) {
+  .Container {
+    min-height: calc(100vh - 85px);
+    padding: 20px;
+  }
+}

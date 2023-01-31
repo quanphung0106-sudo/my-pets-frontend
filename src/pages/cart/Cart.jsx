@@ -6,7 +6,7 @@ import {
   ListItemText,
   Stack,
   Tooltip,
-  Typography
+  Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -209,7 +209,7 @@ const Cart = () => {
                     primary
                     to="/products"
                   >
-                    Buy more pets
+                    Buy more
                   </BaseButton>
                   <BaseButton primary onClick={handleClear}>
                     Clear all
@@ -232,13 +232,25 @@ const Cart = () => {
                   <Typography variant="h1">Cart Total</Typography>
                   <List className={styles.TotalWrapper}>
                     <ListItem>
-                      <ListItemText className={styles.ListItemText} primary="Subtotal" secondary={`${amount}`} />
+                      <ListItemText
+                        className={styles.ListItemText}
+                        primary="Subtotal"
+                        secondary={`${amount}`}
+                      />
                     </ListItem>
                     <ListItem>
-                      <ListItemText className={styles.ListItemText} primary="Discount" secondary="0" />
+                      <ListItemText
+                        className={styles.ListItemText}
+                        primary="Discount"
+                        secondary="0"
+                      />
                     </ListItem>
                     <ListItem>
-                      <ListItemText className={styles.ListItemText} primary="Total" secondary={`${amount}`} />
+                      <ListItemText
+                        className={styles.ListItemText}
+                        primary="Total"
+                        secondary={`${amount}`}
+                      />
                     </ListItem>
                   </List>
                   {openPayment ? (
@@ -246,7 +258,9 @@ const Cart = () => {
                       <BaseButton ghost onClick={handleClickOpen}>
                         CASH
                       </BaseButton>
-                      <BaseButton primary disabled>Paypal</BaseButton>
+                      <BaseButton primary disabled>
+                        Paypal
+                      </BaseButton>
                     </Stack>
                   ) : (
                     <BaseButton ghost onClick={() => setOpenPayment(true)}>

@@ -1,13 +1,11 @@
 .Login {
   height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background-color: var(--pink_0);
+  padding: 25px;
 }
 
 .Container {
-  width: 85rem;
+  width: 75rem;
   display: flex;
   background-color: var(--white);
   height: 60rem;
@@ -25,58 +23,43 @@
 
   .Texts {
     position: absolute;
-    top: 0;
     left: 0;
     padding: 25px;
-    display: flex;
     max-height: 60rem;
-    flex-direction: column;
     color: rgb(88, 83, 83);
     font-weight: 650;
     font-size: 1.8rem;
     pointer-events: none;
-    gap: 5rem;
 
     h1 {
       color: var(--pink_100);
       font-weight: bold;
-      font-size: 6rem;
-      line-height: 8rem;
+      font-size: 3.6rem;
+      pointer-events: none;
     }
 
     p {
       font-size: 1.8rem;
       font-weight: bold;
-    }
-
-    p:nth-child(2) {
+      pointer-events: none;
     }
 
     button {
       pointer-events: all;
-      margin-top: 15px;
     }
   }
 }
 
 .Form {
-  flex: 1;
-  display: flex;
-  align-items: center;
-
   .Texts {
-    padding: 4.5rem;
+    padding: 25px;
     width: 100%;
 
-    h2 {
-      margin-bottom: 5rem;
-      font-size: 4.5rem;
+    h1 {
+      font-size: 3.6rem;
       font-weight: 700;
       color: var(--pink_100);
-    }
-
-    h3 {
-      font-size: 2rem;
+      margin-bottom: 38px;
     }
 
     form {
@@ -86,14 +69,29 @@
   }
 }
 
-@media (max-width: 63.9375em) {
-  .ImgContainer {
-    .Texts {
-      gap: 2rem;
-      h1 {
-        font-size: 4.5rem;
-        line-height: 5rem;
+@media screen and (max-width: 46.25em) {
+  .Login {
+    padding: 20px;
+    .Container {
+      width: 100%;
+      height: fit-content;
+
+      .Form {
+        .Texts {
+          .Btn {
+            min-width: 100%;
+          }
+        }
       }
+    }
+  }
+}
+
+@media screen and (min-width: 46.25em) and (max-width: 63.9375em) {
+  .Login {
+    padding: 20px;
+    .Container {
+      width: 100%;
     }
   }
 }

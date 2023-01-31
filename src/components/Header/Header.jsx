@@ -133,30 +133,24 @@ const Header = () => {
                 <ListItemText primary="Item" />
               </ListItemButton>
             </Link>
-            <Link to="/">
-              <ListItemButton>
-                <ListItemIcon>
-                  <EventIcon />
-                </ListItemIcon>
-                <ListItemText primary="Event" />
-              </ListItemButton>
-            </Link>
-            <Link to="/">
-              <ListItemButton>
-                <ListItemIcon>
-                  <FeedIcon />
-                </ListItemIcon>
-                <ListItemText primary="Blog" />
-              </ListItemButton>
-            </Link>
-            <Link to="/">
-              <ListItemButton>
-                <ListItemIcon>
-                  <PhoneIcon />
-                </ListItemIcon>
-                <ListItemText primary="Contact" />
-              </ListItemButton>
-            </Link>
+            <ListItemButton>
+              <ListItemIcon>
+                <EventIcon />
+              </ListItemIcon>
+              <ListItemText primary="Event" />
+            </ListItemButton>
+            <ListItemButton>
+              <ListItemIcon>
+                <FeedIcon />
+              </ListItemIcon>
+              <ListItemText primary="Blog" />
+            </ListItemButton>
+            <ListItemButton>
+              <ListItemIcon>
+                <PhoneIcon />
+              </ListItemIcon>
+              <ListItemText primary="Contact" />
+            </ListItemButton>
           </List>
         </Stack>
       </Drawer>

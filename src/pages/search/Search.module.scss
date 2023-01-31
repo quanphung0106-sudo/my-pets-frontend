@@ -59,6 +59,12 @@ $background_color_hover: #f0919675;
 //mobile
 @media screen and (max-width: 46.25em) {
   .Container {
-    padding: 25px;
+    padding: 20px;
+    min-height: calc(100vh - 85px);
+    .ContentWrapper {
+      h4 {
+        font-size: 1.6rem;
+      }
+    }
   }
 }

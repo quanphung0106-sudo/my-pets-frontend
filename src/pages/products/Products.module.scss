@@ -1,4 +1,3 @@
-//Progress bar
 .ProgressBar {
   position: fixed;
   top: 100px;
@@ -63,10 +62,9 @@
 
   .Items {
     flex: 1;
-    gap: 35px;
+    // gap: 35px;
 
     .Skeleton {
-      width: 240px;
       height: 32rem;
       max-height: 32rem;
       display: flex;
@@ -77,8 +75,8 @@
     }
 
     .Item {
-      width: 240px;
-      max-width: 240px;
+      width: 24rem;
+      max-width: 24rem;
       max-height: 35rem;
       border-radius: 5px;
       background-color: var(--pink_70);
@@ -125,11 +123,6 @@
       }
     }
 
-    .Loading {
-      height: calc(100vh - 100px);
-      width: 100%;
-    }
-
     &.Tablet {
       justify-content: center;
       padding: 0;
@@ -140,17 +133,35 @@
 //tablet
 @media screen and (min-width: 46.25em) and (max-width: 63.9375em) {
   .Container {
-    padding: 20px;
+    padding: 25px;
     .Items {
-      gap: 30px;
+      .Item, .Skeleton {
+        width: 31%;
+        max-width: 31%;
+      }
     }
   }
 }
 
 @media screen and (max-width: 46.25em) {
+  .ProgressBar {
+    top: 85px;
+  }
+  .Container {
+    padding: 20px;
+    .Items, .Skeleton {
+      justify-content: center;
+    }
+  }
+}
+
+@media screen and (min-width: 100em) {
   .Container {
     .Items {
-      justify-content: center;
+      .Item, .Skeleton {
+        width: 22rem;
+        max-width: 22rem;
+      }
     }
   }
 }

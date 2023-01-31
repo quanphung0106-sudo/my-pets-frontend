@@ -1,71 +1,47 @@
-@mixin flexBox($align, $justify) {
-  display: flex;
-  align-items: $align;
-  justify-content: $justify;
-  @content;
-}
+.Advantages {
+  padding: 50px;
+  min-height: calc(100vh - 100px);
+  background-color: var(--white);
 
-.Container {
-  @include flexBox(flex-start, center) {
-    background-color: var(--white);
-    flex-direction: column;
-    padding: 50px;
-  }
+  .Container {
+    height: 100%;
+    width: 80%;
 
-  .ContentWrapper {
-    @include flexBox(center, center) {
-      flex-wrap: wrap;
-    }
-
-    .TextsWrapper {
-      @include flexBox(flex-start, center) {
-        margin-bottom: 5rem;
-      }
-
-      .IconWrapper {
-        @include flexBox(center, center) {
-          width: 6rem;
-          height: 6rem;
-          padding: 25px;
-          padding-top: 0;
+    .ContentWrapper {
+      .TextsWrapper {
+        width: 40%;
+        .IconWrapper {
+          img {
+            width: 4rem;
+            height: 4rem;
+            background-color: var(--pink_100);
+            border-radius: 50%;
+            padding: 10px;
+            object-fit: cover;
+          }
         }
 
-        img {
-          width: 40px;
-          height: 40px;
-          background-color: var(--pink_100);
-          border-radius: 50%;
-          padding: 10px;
-          object-fit: cover;
-        }
-      }
+        .Texts {
+          h1 {
+            margin-bottom: 25px;
+            font-size: 2rem;
+            font-weight: bold;
+          }
 
-      .Texts {
-        h1 {
-          margin-bottom: 25px;
-          font-size: 2rem;
-          font-weight: bold;
-        }
-
-        p {
-          font-style: italic;
-          font-weight: 400;
+          p {
+            font-style: italic;
+            font-weight: 400;
+          }
         }
       }
     }
   }
-}
 
-.BoxWrapper {
-  justify-content: center;
-  .Modal {
-    @include flexBox(flex-start, flex-start) {
-      flex-direction: column;
-      width: 60%;
-      max-width: 1200px;
-      background-color: #f09196;
-      padding: 25px;
-    }
+  .BoxWrapper {
+    width: 50%;
+    max-width: 1200px;
+    background-color: #f09196;
+    padding: 25px;
 
     h2 {
       font-size: 2rem;
@@ -73,6 +49,48 @@
       font-weight: 600;
       line-height: 1.6;
       margin-bottom: 20px;
+    }
+  }
+}
+
+@media screen and (max-width: 46.25em) {
+  .Advantages {
+    padding: 20px;
+    min-height: calc(100vh - 85px);
+
+    .Container {
+      height: 100%;
+      width: 100%;
+
+      .ContentWrapper {
+        .TextsWrapper {
+          width: 100%;
+        }
+      }
+
+      .BoxWrapper {
+        width: 100%;
+      }
+    }
+  }
+}
+
+//tablet
+@media screen and (min-width: 46.25em) and (max-width: 63.9375em) {
+  .Advantages {
+    padding: 25px;
+    .Container {
+      width: 100%;
+
+      .ContentWrapper {
+        .TextsWrapper {
+          width: 100%;
+        }
+      }
+
+      .BoxWrapper {
+        width: 100%;
+      }
     }
   }
 }

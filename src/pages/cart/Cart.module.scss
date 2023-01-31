@@ -41,6 +41,7 @@
 
     .CartTotal {
       width: 100%;
+      height: 100%;
       background-color: var(--pink_60);
       color: var(--white);
       padding: 15px;
@@ -98,9 +99,20 @@
 }
 
 @media screen and (max-width: 46.25em) {
-  .Wrapper {
-    .Right {
+  .Container {
+    height: calc(100vh - 85px);
+    .Wrapper {
       width: 100%;
+      .Right {
+        width: 100%;
+      }
+    }
+  }
+
+  .TextWrapper {
+    justify-content: flex-start;
+    h1 {
+      font-size: 1.6rem;
     }
   }
 }
@@ -112,6 +124,13 @@
     }
     .Right {
       width: 100%;
+    }
+  }
+
+  .TextWrapper {
+    justify-content: flex-start;
+    h1 {
+      font-size: 1.8rem;
     }
   }
 }

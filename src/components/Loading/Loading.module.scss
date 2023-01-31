@@ -6,17 +6,23 @@
   gap: 15px;
 
   h1 {
-    font-size: 3.2rem;
+    font-size: 2.6rem;
     font-weight: bold;
   }
 
   .LoadingIcon {
-    border: 5px solid transparent;
-    border-top-color: var(--pink_light);
-    border-right-color: var(--pink_60);
-    border-bottom-color: var(--pink_100);
-    border-left-color: transparent;
-    border-radius: 50%;
-    color: transparent !important;
+    color: var(--pink_100);
+  }
+}
+
+@media screen and (max-width: 46.25em) {
+  .Loading {
+    h1 {
+      font-size: 1.8rem;
+    }
+    .LoadingIcon {
+      width: 25px !important;
+      height: 25px !important;
+    }
   }
 }

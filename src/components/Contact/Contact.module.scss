@@ -5,7 +5,7 @@
   padding: 50px;
 
   .Container {
-    width: 60%;
+    width: 80rem;
     background-color: var(--white);
     border-radius: 5px;
     padding: 25px;
@@ -61,6 +61,16 @@
   .Contact {
     min-height: calc(100vh - 85px);
     padding: 20px;
+    .Container {
+      width: 100%;
+    }
+  }
+}
+
+//tablet
+@media screen and (min-width: 46.25em) and (max-width: 63.9375em) {
+  .Contact {
+    padding: 25px;
     .Container {
       width: 100%;
     }

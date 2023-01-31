@@ -106,6 +106,7 @@ const CreateAndUpdate = ({ open, setOpen, callback, id }) => {
       }
     };
     getItemById();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, reset, open]);
 
   const handleClose = () => {

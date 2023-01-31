@@ -132,18 +132,6 @@
   }
 }
 
-//tablet
-@media screen and (min-width: 46.25em) and (max-width: 63.9375em) {
-  .Container {
-    .Item:first-child {
-      display: none;
-    }
-    .Nav {
-      align-items: flex-start;
-    }
-  }
-}
-
 //mobile
 @media screen and (max-width: 46.25em) {
   .Container {
@@ -174,6 +162,18 @@
     a {
       text-decoration: none;
       color: var(--black);
+    }
+  }
+}
+
+//tablet
+@media screen and (min-width: 46.25em) and (max-width: 63.9375em) {
+  .Container {
+    .Item:first-child {
+      display: none;
+    }
+    .Nav {
+      align-items: flex-start;
     }
   }
 }

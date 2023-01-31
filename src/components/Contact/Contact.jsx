@@ -1,12 +1,12 @@
-import { Box, Stack, Typography } from "@mui/material";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import InstagramIcon from "@mui/icons-material/Instagram";
 import GoogleIcon from "@mui/icons-material/Google";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import { Stack, Typography } from "@mui/material";
 
-import styles from "./Contact.module.scss";
 import { BaseButton } from "../Button/Button";
 import { ContainedTextField } from "../TextField/TextField";
+import styles from "./Contact.module.scss";
 
 const Contact = () => {
   return (

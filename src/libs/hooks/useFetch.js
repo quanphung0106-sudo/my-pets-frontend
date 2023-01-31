@@ -70,6 +70,7 @@ const useFetch = (name, id, user, params) => {
 
   useEffect(() => {
     fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, id, handleFetchOrders]);
 
   const reFetch = () => {

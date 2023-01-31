@@ -1,11 +1,11 @@
-import { Box, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 
-import styles from "./Advantages.module.scss";
 import Advantages1 from "~/assets/images/advantages-1.png";
 import Advantages2 from "~/assets/images/advantages-2.png";
 import Advantages3 from "~/assets/images/advantages-3.png";
 import Advantages4 from "~/assets/images/advantages-4.png";
 import { BaseButton } from "../Button/Button";
+import styles from "./Advantages.module.scss";
 
 const data = [
   {
